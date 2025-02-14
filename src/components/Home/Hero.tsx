@@ -11,34 +11,49 @@ const HeroSection = () => {
 
   // Sequence of animations
   React.useEffect(() => {
-    const sequence = async () => {
-      await helloControls.start({
-        y: 0,
-        opacity: 1,
-        transition: { type: "spring", stiffness: 30, damping: 15, delay: 0.1 },
-      });
-  
-      await imControls.start({
-        y: 0,
-        opacity: 1,
-        transition: { type: "spring", stiffness: 50, damping: 20, delay: 0 },
-      });
-  
-      await imageControls.start({
-        opacity: 1,
-        transition: { type: "spring", duration: 0.1, stiffness: 30, damping: 15, ease: "easeInOut", delay: 0.2 },
-      });
-  
-      await buttonControls.start({
-        y: 0,
-        opacity: 1,
-        transition: { type: "spring", stiffness: 50, damping: 20, delay: 0 },
+    // Preload images (keep this part as is)
+    const preloadImages = () => {
+      const imagePaths = [
+        "/oversabinurse/hero1.png",
+        "/oversabinurse/hero2.png",
+        "/oversabinurse/Oversabi-Nurse.svg",
+        "/oversabinurse/quote-up.png",
+        "/oversabinurse/reviews.svg"
+      ];
+      
+      imagePaths.forEach(src => {
+        const img = new Image();
+        img.src = src;
       });
     };
+    
+    preloadImages();
+    
+    // Use fixed delays instead of sequential animations
+    helloControls.start({
+      y: 0,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 120, damping: 14, delay: 0.1 },
+    });
   
-    sequence();
+    imControls.start({
+      y: 0,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 120, damping: 14, delay: 0.3 },
+    });
+  
+    imageControls.start({
+      opacity: 1,
+      transition: { duration: 0.4, ease: "easeOut", delay: 0.5 },
+    });
+  
+    buttonControls.start({
+      y: 0,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 120, damping: 15, delay: 0.7 },
+    });
+    
   }, [helloControls, imControls, imageControls, buttonControls]);
-
 
   return (
     <div className="h-full bg-white">
@@ -161,7 +176,7 @@ const HeroSection = () => {
             className="w-full max-w-[1000px] -mt-[40px] lg:-mt-[70px] mx-auto relative">
               <div className="absolute md:-bottom-[190px] -bottom-[100px] left-0 right-0 w-[60%] md:w-[100%] h-[120%] max-w-[300px] md:max-w-[400px] mx-auto aspect-square -rotate-90 rounded-e-[850px] !rounded-ee-[1000px] bg-primary-main" />
               <img
-                src="oversabinurse/Oversabi-Nurse.svg"
+                src="/oversabinurse/Oversabi-Nurse.svg"
                 alt="Professional nurse portrait"
                 className="relative z-10 w-full max-w-[320px] md:max-w-[660px] mx-auto h-auto"
                 
