@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { QuoteIcon } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+// import { QuoteIcon } from 'lucide-react';
 
 interface Testimonial {
   id: number;
