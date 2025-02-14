@@ -10,50 +10,50 @@ const HeroSection = () => {
   const buttonControls = useAnimation();
 
   // Sequence of animations
-  React.useEffect(() => {
-    // Preload images (keep this part as is)
-    const preloadImages = () => {
-      const imagePaths = [
-        "/oversabinurse/hero1.png",
-        "/oversabinurse/hero2.png",
-        "/oversabinurse/Oversabi-Nurse.svg",
-        "/oversabinurse/quote-up.png",
-        "/oversabinurse/reviews.svg"
-      ];
-      
-      imagePaths.forEach(src => {
-        const img = new Image();
-        img.src = src;
-      });
-    };
+ React.useEffect(() => {
+  // Preload images (keep this part as is)
+  const preloadImages = () => {
+    const imagePaths = [
+      "/oversabinurse/hero1.png",
+      "/oversabinurse/hero2.png",
+      "/oversabinurse/Oversabi-Nurse.svg",
+      "/oversabinurse/quote-up.png",
+      "/oversabinurse/reviews.svg"
+    ];
     
-    preloadImages();
-    
-    // Use fixed delays instead of sequential animations
-    helloControls.start({
-      y: 0,
-      opacity: 1,
-      transition: { type: "spring", stiffness: 120, damping: 14, delay: 0.1 },
+    imagePaths.forEach(src => {
+      const img = new Image();
+      img.src = src;
     });
+  };
   
-    imControls.start({
-      y: 0,
-      opacity: 1,
-      transition: { type: "spring", stiffness: 120, damping: 14, delay: 0.3 },
-    });
+  preloadImages();
   
-    imageControls.start({
-      opacity: 1,
-      transition: { duration: 0.4, ease: "easeOut", delay: 0.5 },
-    });
+  // Use fixed delays instead of sequential animations
+  helloControls.start({
+    y: 0,
+    opacity: 1,
+    transition: { type: "spring", stiffness: 120, damping: 14, delay: 0.1 },
+  });
+
+  imControls.start({
+    y: 0,
+    opacity: 1,
+    transition: { type: "spring", stiffness: 120, damping: 14, delay: 0.3 },
+  });
+
+  imageControls.start({
+    opacity: 1,
+    transition: { duration: 0.4, ease: "easeOut", delay: 0.5 },
+  });
+
+  buttonControls.start({
+    y: 0,
+    opacity: 1,
+    transition: { type: "spring", stiffness: 120, damping: 15, delay: 0.7 },
+  });
   
-    buttonControls.start({
-      y: 0,
-      opacity: 1,
-      transition: { type: "spring", stiffness: 120, damping: 15, delay: 0.7 },
-    });
-    
-  }, [helloControls, imControls, imageControls, buttonControls]);
+}, [helloControls, imControls, imageControls, buttonControls]);
 
   return (
     <div className="h-full bg-white">

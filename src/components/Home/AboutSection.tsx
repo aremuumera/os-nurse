@@ -12,7 +12,7 @@ import { MdOutlineArrowOutward } from 'react-icons/md';
 
 const AboutSection = () => {
   return (
-    <section className="container mx-auto px-4 py-12 max-w-6xl">
+    <section className="container relative mx-auto px-4 py-12 max-w-6xl">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Left column with title and nurse image */}
         <div className="flex flex-col">
@@ -32,6 +32,7 @@ const AboutSection = () => {
         <div className="flex flex-col">
           <div className="relative h-96 md:h-[618px] w-full overflow-hidden  ">
             <img
+            loading='lazy'
               src={'/oversabinurse/os-image2.svg'}
               alt="Healthcare leader in professional attire"
               className="w-full h-full object-cover"
