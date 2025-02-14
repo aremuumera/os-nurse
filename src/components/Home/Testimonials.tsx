@@ -43,16 +43,17 @@ const testimonials: Testimonial[] = [
 
 const TestimonialsSlider = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  // const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const isAutoPlaying = true
   const autoPlayDuration = 5000;
 
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % testimonials.length);
   }, []);
 
-  const prevSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-  }, []);
+  // const prevSlide = useCallback(() => {
+  //   setCurrentSlide((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  // }, []);
 
   const goToSlide = (index: number) => {
     setCurrentSlide(index);
