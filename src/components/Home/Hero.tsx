@@ -1,5 +1,4 @@
 import React from "react";
-import { ArrowRight } from "lucide-react";
 import { MdOutlineArrowOutward } from "react-icons/md";
 import { motion, useAnimation } from "framer-motion";
 
