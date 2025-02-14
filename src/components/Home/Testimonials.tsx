@@ -60,19 +60,17 @@ const TestimonialsSlider = () => {
   };
 
   useEffect(() => {
-    let intervalId: NodeJS.Timeout;
-
+    let intervalId: number; // ✅ Correct type for browser
+  
     if (isAutoPlaying) {
-      intervalId = setInterval(nextSlide, autoPlayDuration);
+      intervalId = window.setInterval(nextSlide, autoPlayDuration);
     }
-
+  
     return () => {
-      if (intervalId) {
-        clearInterval(intervalId);
-      }
+      clearInterval(intervalId);
     };
   }, [isAutoPlaying, nextSlide]);
-
+  
   return (
     <div className="max-w-7xl mx-auto px-4 py-16">
       {/* Header */}
