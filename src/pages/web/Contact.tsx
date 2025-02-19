@@ -1,6 +1,6 @@
 
 
-import React from 'react'
+// import React from 'react'
 import NewsletterSubscription from '../../components/Home/Newsletter'
 import Footer from '../../components/footer'
 import Header from '../../components/header'

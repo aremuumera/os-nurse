@@ -10,7 +10,7 @@ import NewArrivals from '../../components/shop/shopArrivals'
 const HomeShop = () => {
   return (
     <div>
-      <ShopNavbar />
+      <ShopNavbar onCartClick={() => { /* handle cart click */ }} />
       <HeroSection />
       <NewArrivals /> 
       <NewsletterSubscription />
