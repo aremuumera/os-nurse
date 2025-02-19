@@ -15,8 +15,9 @@ const PasswordResetFlow = () => {
     password: '',
     confirmPassword: ''
   });
-  const [errors, setErrors] = useState<string[]>([]);
-  const [timer, setTimer] = useState(23);
+  // const [errors, setErrors] = useState<string[]>([]);
+  // const [timer, setTimer] = useState(23);
+  const timer = 23;
   const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   // OTP input handling

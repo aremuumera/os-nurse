@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Eye, EyeOff } from 'lucide-react';
-import { allPaths } from '../../utils/path';
+// import { Eye, EyeOff } from 'lucide-react';
+// import { allPaths } from '../../utils/path';
 
 interface FormData {
   email: string;

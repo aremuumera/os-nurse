@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import { allPaths } from '../../utils/path';
-import ForgotPassword from '../../pages/auth/forgotPassword';
+// import ForgotPassword from '../../pages/auth/forgotPassword';
 
 interface FormData {
   name: string;
