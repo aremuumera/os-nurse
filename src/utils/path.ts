@@ -4,22 +4,23 @@
 
 export const allPaths = {
     home: '/',
+    about: '/about-me',
+    blog: '/blog',
+    contact: '/contact',    
     auth: {
-        login: `/auth/login`,
-        register: `/auth/register`,
+        login: `/auth/sign-in`,
+        register: `/auth/sign-up`,
         forgotPassword: `/auth/forgot-password`,
         resetPassword: `/auth/reset-password`,
+        verifyCode: `/auth/verify-code`,
     },
-    dashboard: {
-        root: `/dashboard`,
-        members: `/dashboard/members`,
-        member: `/dashboard/members/[id]`,
-        profile: `/dashboard/members/[id]/profile`,
-        savings: `/dashboard/members/[id]/savings`,
-        loans: `/dashboard/members/[id]/loans`,
-        investment: `/dashboard/members/[id]/investment`,
-        shares: `/dashboard/members/[id]/shares`,
-        activityLog: `/dashboard/members/[id]/activity-log`,
+    shop: {
+        shop: `/shop`,
+        product: `/shop/product`,
+        cart: `/shop/cart`,
+        checkout: `/shop/checkout`,
+        productDetials: `/shop/product-details`,
+        
     }
 }
 

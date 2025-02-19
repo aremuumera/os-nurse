@@ -67,7 +67,6 @@ const HeroSection = () => {
           className="flex justify-center">
             <div
               className="relative"
-              
             >
               <div className="bg-white px-5 md:px-7 py-2 md:py-3 mb-4 rounded-full border-[1px] border-gray-600">
                 Hello!

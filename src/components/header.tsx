@@ -5,9 +5,9 @@ import { allPaths } from "../utils/path";
 import { Link } from "react-router-dom";
 
 const topNavItems = [
-  { name: "Blog", href: "/" },
-  { name: "About Us", href: "/" },
-  { name: "Contact Us", href: "/" },
+  { name: "Blog", href: `${allPaths.blog}` },
+  { name: "About Us", href: `${allPaths.about}` },
+  { name: "Contact Us", href: `${allPaths.contact}` },
 ];
 
 
@@ -23,7 +23,7 @@ export default function Header() {
             <div className="flex justify-between items-center px-4 sm:px-10  md:h-[85px] h-[70px]  lg:pr-16 lg:pl-2 ">
                 
                  <div className="px-10 py-[16px] hidden lg:block  rounded-full bg-primary-mainPink text-white">
-                    <Link to={allPaths.auth.login} className="font-[400] text-[18px] " >
+                    <Link to={allPaths.shop.shop} className="font-[400] text-[18px] " >
                         Shop
                     </Link>
                 </div>
@@ -34,11 +34,10 @@ export default function Header() {
                     <Link to={"/"}>
                         <img
                         src={"/Oversabi-Nurse-logo.png"}
-                        alt="nama Africa logo"
+                        alt="over sabi nurse logo"
                         width={94}
                         height={85}
                         className='md:w-[95px]  w-[80px]'
-
                         />
                     </Link>
                 </div>
@@ -68,11 +67,7 @@ export default function Header() {
                     </Link>
                 ))}
                 </nav>
-
-                
                 </div>
-                
-
                 {/* Mobile Menu Button */}
                 <button
                     className="lg:hidden flex items-center"
@@ -134,7 +129,7 @@ export default function Header() {
           ))}
         </nav>
         <div className="px-6 text-center mt-8 w-full  text-white">
-            <Link to={allPaths.auth.login} className="font-[700] text-center  text-white px-6 py-4 rounded-full block  !w-full text-[16px] bg-primary-mainPink " >
+            <Link to={allPaths.shop.shop} className="font-[700] text-center  text-white px-6 py-4 rounded-full block  !w-full text-[16px] bg-primary-mainPink " >
                Shop
             </Link>
         </div>
