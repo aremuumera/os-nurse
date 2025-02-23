@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import { allPaths } from '../../utils/path';
-import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { UserSignin } from '../../redux/authFeature/authApi';
 import { ToastContainer, toast } from 'react-toastify';

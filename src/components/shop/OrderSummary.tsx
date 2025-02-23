@@ -1,6 +1,4 @@
-import { useState } from "react";
 import { OrderSummary } from "./CartPage";
-import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { setCouponCode } from "../../redux/Order/order_api_slice";
 

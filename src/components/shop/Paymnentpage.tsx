@@ -2,7 +2,7 @@ import { ChevronRight } from "lucide-react";
 import OrderSummaryPanel from "./OrderSummary";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useAppDispatch } from "../../redux/store";
+// import { useAppDispatch } from "../../redux/store";
 
 
 
@@ -10,7 +10,7 @@ import { useAppDispatch } from "../../redux/store";
 // Shipping Page Component
  const PaymentPage: React.FC = () => {
   const [selectedCard, setSelectedCard] = useState<string>('');
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
   const paymentMethods = [
     { id: 'card1', cardNumber: '****6754', expiryDate: '06/2021' },

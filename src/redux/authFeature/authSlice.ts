@@ -4,24 +4,24 @@ import { ResendOTP, UserForgotPassword, UserResetPassword, UserSignin, UserSignu
 import { jwtDecode } from 'jwt-decode';
 import { Dispatch } from 'redux';
 import { PayloadAction, ActionReducerMapBuilder } from '@reduxjs/toolkit';
-import { AuthStateInterface } from '../../types/Auth';
+// import { AuthStateInterface } from '../../types/Auth';
 import { RootState } from '../store';
 
 
 
 
 
-const initialState: AuthStateInterface = {
+const initialState: AuthState = {
     isAuth: false,
     isInitialized: false,
-    awaitingOTPVerification: localStorage.getItem('awaitingOTPVerification') === 'true',
     themOs: null, 
     token: null,
     loading: false,
-    error:null,
+    error: null,
     email: localStorage.getItem('email') || '',
     requestedLocation: null,
     status: false,
+    awaitingOTPVerification: false,
   };
   
   
@@ -42,6 +42,7 @@ interface CheckTokenExpirationAction {
 }
 
 
+
 export const checkTokenExpiration: CheckTokenExpirationAction = (dispatch, getState) => {
     const { token } = getState().auth;
     if (token && isTokenExpired(token)) {
@@ -53,13 +54,14 @@ export const checkTokenExpiration: CheckTokenExpirationAction = (dispatch, getSt
 interface AuthState {
     isAuth: boolean;
     isInitialized: boolean;
-    awaitingOTPVerification: boolean;
+    token: string | null;
     loading: boolean;
     error: string | null;
     email: string;
     requestedLocation: string | null;
     themOs: string | null;
     status: boolean;
+    awaitingOTPVerification: boolean;
 }
 
 // interface AuthPayload {
@@ -74,14 +76,14 @@ const AuthSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        logout: (state: AuthState) => {
+        logout: (state) => {
             state.loading = false;
             state.error = null;
             localStorage.removeItem('themOs');
-            state.awaitingOTPVerification = false;
             localStorage.removeItem('awaitingOTPVerification');
             state.isAuth = false;
             state.isInitialized = false;
+            state.awaitingOTPVerification = false;
         },
         setUserEmail: (state: AuthState, action: PayloadAction<string>) => {
             state.email = action.payload;

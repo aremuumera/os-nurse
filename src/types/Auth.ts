@@ -16,9 +16,9 @@ export interface AuthStateInterface {
     themOs: object | null;
     loading: boolean;
     error: ThunkErrorPayload | null;
-    awaitingOTPVerification: boolean;
     requestedLocation: string | null;
     status: boolean;
+    awaitingOTPVerification: boolean;
   }
   
 

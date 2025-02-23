@@ -5,12 +5,12 @@ import { allPaths } from '../../utils/path';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { searchBooksByQuery } from '../../redux/Books/books_api_slice';
 
-interface NavbarProps {
-  // onCartClick: () => void;
-  cartItemsCount?: number;
-}
+// interface NavbarProps {
+//   // onCartClick: () => void;
+//   cartItemsCount?: number;
+// }
 
-const ShopNavbar = ({ cartItemsCount = 0 }: NavbarProps) => {
+const ShopNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
     const {  items } = useAppSelector(state => state.order);
