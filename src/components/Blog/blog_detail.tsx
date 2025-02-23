@@ -18,7 +18,9 @@ const BlogDetailsPage: React.FC = () => {
     }
   }, [dispatch, blogDetail]);
 
-  if (loading) return <div className="text-center py-8"><div className="flex justify-center items-center w-full h-screen">
+  if (loading) return <div className="text-center py-8">
+    
+  <div className="flex justify-center items-center w-full h-screen">
   <svg
     className="animate-spin h-10 w-10 text-[#380A48]"
     xmlns="http://www.w3.org/2000/svg"
@@ -74,7 +76,7 @@ const BlogDetailsPage: React.FC = () => {
       </div>
       
       <img
-        src={blogDetails.image || '/Frame 1000009724.png'}
+        src={blogDetails.cover_url || '/Frame 1000009724.png'}
         alt={ 'oversabi Blog Details'}
         className="w-full h-96 object-cover rounded-lg mb-8"
       />

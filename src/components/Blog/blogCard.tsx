@@ -13,6 +13,7 @@ export interface Blog {
     image?: string;
     uuid?: string;
     author?: string;
+    cover_url?: string;
   }
 
 interface BlogCardProps {
@@ -31,7 +32,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ blog }) => {
       >
         <div className="rounded-lg  ">
           <img 
-            src={blog.image || '/Frame 1000007341.png'} 
+            src={blog.cover_url || '/Frame 1000007341.png'} 
             alt={'over-sabi-nurse'} 
             className="w-full h-full object-cover"
           />

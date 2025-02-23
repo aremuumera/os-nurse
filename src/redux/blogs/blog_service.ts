@@ -20,7 +20,7 @@ export interface BlogDetails {
     image?: string;
     uuid?: string;
     author?: string;
-    // Add other fields as needed
+    cover_url?: string;
 }
 
 // Fetch all blogs
