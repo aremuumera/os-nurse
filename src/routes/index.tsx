@@ -1,24 +1,24 @@
-import Layout from '../layout/index'; // Ensure this is a default import
+import Layout from '../layout/index'; 
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
-// import Home from '../pages/Home';
 import withLazyLoading from '../utils/Loader';
 import { lazy } from 'react';
-import About from '../pages/web/About';
-import Blog from '../pages/web/Blog';
-import Contact from '../pages/web/Contact';
-import SignUp from '../pages/auth/signUp';
-import ResetPassword from '../pages/auth/resetPassword';
-import ForgotPassword from '../pages/auth/forgotPassword';
-import SignIn from '../pages/auth/signIn';
-import VerifyCode from '../pages/auth/verifyCode';
-import HomeShop from '../pages/shop/HomeShop';
-import ProductDetail from '../pages/shop/ProductDetail';
-import ProductCart from '../pages/shop/Cart';
-import OrderSummary from '../pages/shop/OrderSummary';
-import Payment from '../pages/shop/Payment';
+import ShippingInformation from '../pages/shop/ShippingInformation';
 
 
 const Home = withLazyLoading(lazy(() => import('../pages/web/Home')));
+const About = withLazyLoading(lazy(() => import('../pages/web/About')));
+const Blog = withLazyLoading(lazy(() => import('../pages/web/Blog')));
+const Contact = withLazyLoading(lazy(() => import('../pages/web/Contact')));
+const SignUp = withLazyLoading(lazy(() => import('../pages/auth/signUp')));
+const ResetPassword = withLazyLoading(lazy(() => import('../pages/auth/resetPassword')));
+const ForgotPassword = withLazyLoading(lazy(() => import('../pages/auth/forgotPassword')));
+const SignIn = withLazyLoading(lazy(() => import('../pages/auth/signIn')));
+const VerifyCode = withLazyLoading(lazy(() => import('../pages/auth/verifyCode')));
+const HomeShop = withLazyLoading(lazy(() => import('../pages/shop/HomeShop')));
+const ProductDetail = withLazyLoading(lazy(() => import('../pages/shop/ProductDetail')));
+const ProductCart = withLazyLoading(lazy(() => import('../pages/shop/Cart')));
+const Payment = withLazyLoading(lazy(() => import('../pages/shop/Payment')));
+const BlogDetail = withLazyLoading(lazy(() => import('../pages/web/BlogDetail')));
 
 
 // Define the type for the route configuration
@@ -40,6 +40,7 @@ interface RouteConfig {
       { index: true, element: <Home /> },
       { path:'/about-me', element: <About /> },
       { path:'/blog', element: <Blog /> },
+      { path:'/blog/:blogDetail', element: <BlogDetail/> },
       { path:'/contact', element: <Contact /> },
     ],
   },
@@ -47,7 +48,7 @@ interface RouteConfig {
     element: (
         <Outlet />
     ),
-    path: '/auth',
+    path: `/auth`,
     children: [
       {index: true, element: <Navigate to="/auth/sign-in" />},
       {path:'sign-in', element: <SignIn />},
@@ -64,9 +65,10 @@ interface RouteConfig {
     path: '/shop',
     children: [
       {index: true, element: <HomeShop />},
-      {path:'product-detail', element: <ProductDetail />},
+      {path:'search', element: <HomeShop />},
+      {path:'books/:productDetail', element: <ProductDetail />},
       {path:'cart', element: <ProductCart />},
-      {path:'Order-Summary', element: <OrderSummary />},
+      {path:'shipping-information', element: <ShippingInformation />},
       {path:'payment', element: <Payment />},
     ]
   }

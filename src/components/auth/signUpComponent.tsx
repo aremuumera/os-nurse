@@ -1,12 +1,29 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import { allPaths } from '../../utils/path';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
+import { useNavigate } from 'react-router-dom';
+import {  UserSignup } from '../../redux/authFeature/authApi';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+interface ServerResponse {
+  message: string;
+  user: {
+    name: string;
+    email: string;
+    updated_at: string;
+    created_at: string;
+    id: number;
+  };
+}
 
 interface FormData {
   name: string;
   email: string;
   password: string;
-  agreeToTerms: boolean;
+  agreeToTerms?: boolean;
+  password_confirmation?: string;
 }
 
 interface FormErrors {
@@ -14,18 +31,23 @@ interface FormErrors {
   email?: string;
   password?: string;
   agreeToTerms?: string;
+  password_confirmation?: string;
 }
 
 const SignUpForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
     password: '',
-    agreeToTerms: false,
+    password_confirmation: '',
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { loading } = useAppSelector((state) => state?.auth);
 
   const validateField = (name: keyof FormData, value: string | boolean): string | undefined => {
     switch (name) {
@@ -61,18 +83,21 @@ const SignUpForm = () => {
     }
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     const newValue = type === 'checkbox' ? checked : value;
     
-    setFormData(prev => ({
+    setFormData((prev: FormData) => ({
       ...prev,
       [name]: newValue
     }));
+    if (name === 'password') {
+      setFormData((prev: FormData) => ({
+        ...prev,
+        password_confirmation: newValue as string
+      }));
+    }
 
-    // Validate on change if the field has been touched
     if (touched[name]) {
       setErrors(prev => ({
         ...prev,
@@ -96,17 +121,15 @@ const SignUpForm = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validate all fields
     const newErrors: FormErrors = {};
     (Object.keys(formData) as Array<keyof FormData>).forEach(key => {
-      const error = validateField(key, formData[key]);
+      const error = validateField(key, formData[key] as string | boolean);
       if (error) newErrors[key] = error;
     });
 
-    // Update touched state for all fields
     setTouched({
       name: true,
       email: true,
@@ -117,13 +140,63 @@ const SignUpForm = () => {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      console.log('Form submitted successfully:', formData);
-      // Handle successful form submission here
+      setIsSubmitting(true);
+      try {
+        const resultAction = await dispatch(UserSignup({
+          ...formData,
+          password_confirmation: formData.password_confirmation || ''
+        }));
+        
+        if (UserSignup.fulfilled.match(resultAction)) {
+          const response = resultAction.payload as ServerResponse;
+          toast(
+            <div className="">
+              <p className="font-medium">{response.message}</p>
+            </div>,
+            {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              type: "success"
+            }
+          );
+          
+          setTimeout(() => {
+            window.location.reload();
+            navigate(`${allPaths.auth.verifyCode}`);
+          }, 2000);
+          
+        } else if (UserSignup.rejected.match(resultAction)) {
+          toast.error((resultAction.payload as any)?.message || 'Registration failed. Please try again.', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+        }
+      } catch (err: any) {
+        toast.error(err?.message || 'An unexpected error occurred. Please try again.', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
   return (
     <div className="min-h-screen flex">
+      <ToastContainer />
       <div className="flex-1 flex flex-col justify-center px-4 sm:px-6 lg:px-20 xl:px-24">
         <div className="mx-auto w-full max-w-sm lg:w-96">
           <div className="text-left">
@@ -245,10 +318,15 @@ const SignUpForm = () => {
 
             <div>
               <button
+                disabled={isSubmitting || loading}
                 type="submit"
-                className="w-full flex justify-center py-3 px-8  border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-primary-mainPink hover:bg-primary-mainPink focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-mainPink "
+                className={`w-full flex justify-center py-3 px-8 border border-transparent rounded-full shadow-sm text-sm font-medium text-white
+                  ${isSubmitting || loading 
+                    ? 'bg-gray-400 cursor-not-allowed'
+                    : 'bg-primary-mainPink hover:bg-primary-mainPink focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-mainPink'
+                  }`}
               >
-                Sign Up
+                {isSubmitting || loading ? 'Signing up...' : 'Sign Up'}
               </button>
             </div>
           </form>

@@ -1,11 +1,13 @@
+import BookDetails from "../../components/shop/ProductDetailPage"
+import ShopNavbar from "../../components/shop/shopHeader"
 
 
-// import React from 'react'
 
 const ProductDetail = () => {
   return (
     <div>
-      
+      <ShopNavbar  />
+      <BookDetails />
     </div>
   )
 }

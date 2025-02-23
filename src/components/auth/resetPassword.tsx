@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
+import { UserResetPassword } from '../../redux/authFeature/authApi';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { allPaths } from '../../utils/path';
 
 interface FormData {
   newPassword: string;
@@ -9,68 +15,160 @@ interface FormData {
 interface FormErrors {
   newPassword?: string;
   confirmPassword?: string;
-  general?: string;
 }
 
-const ResetPasswordInitial = () => {
+const ResetPasswordForm = () => {
   const [formData, setFormData] = useState<FormData>({
     newPassword: '',
     confirmPassword: ''
   });
   
   const [errors, setErrors] = useState<FormErrors>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const validateForm = (): boolean => {
-    const newErrors: FormErrors = {};
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { loading } = useAppSelector((state) => state?.auth);
 
-    if (!formData.newPassword) {
-      newErrors.newPassword = 'Password is required';
-    } else if (formData.newPassword.length < 8) {
-      newErrors.newPassword = 'Password must be at least 8 characters';
+  // Get token and email from URL params
+  const searchParams = new URLSearchParams(window.location.search);
+  const token = searchParams.get('token');
+  const email = searchParams.get('email');
+
+  const validateField = (name: keyof FormData, value: string): string | undefined => {
+    switch (name) {
+      case 'newPassword':
+        if (!value) return 'Password is required';
+        if (value.length < 8) return 'Password must be at least 8 characters';
+        if (!/\d/.test(value)) return 'Password must contain at least one number';
+        if (!/[a-z]/.test(value)) return 'Password must contain at least one lowercase letter';
+        if (!/[A-Z]/.test(value)) return 'Password must contain at least one uppercase letter';
+        return undefined;
+      case 'confirmPassword':
+        if (!value) return 'Please confirm your password';
+        if (value !== formData.newPassword) return 'Passwords do not match';
+        return undefined;
+      default:
+        return undefined;
     }
-
-    if (!formData.confirmPassword) {
-      newErrors.confirmPassword = 'Please confirm your password';
-    } else if (formData.confirmPassword !== formData.newPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+
+    if (touched[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: validateField(name as keyof FormData, value)
+      }));
+    }
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    
+    setTouched(prev => ({
+      ...prev,
+      [name]: true
+    }));
+
+    setErrors(prev => ({
+      ...prev,
+      [name]: validateField(name as keyof FormData, value)
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (validateForm()) {
-      console.log('Password reset form submitted', formData);
-      // Handle password reset submission
+    
+    if (!token || !email) {
+      toast.error('Invalid reset link. Please request a new password reset.');
+      return;
+    }
+
+    const newErrors: FormErrors = {};
+    (Object.keys(formData) as Array<keyof FormData>).forEach(key => {
+      const error = validateField(key, formData[key]);
+      if (error) newErrors[key] = error;
+    });
+
+    setTouched({
+      newPassword: true,
+      confirmPassword: true
+    });
+    setErrors(newErrors);
+
+    const payload = {
+      token,
+      email,
+      password: formData.newPassword,
+      password_confirmation: formData.confirmPassword
+    }
+
+    if (Object.keys(newErrors).length === 0) {
+      setIsSubmitting(true);
+      try {
+        const resultAction = await dispatch(UserResetPassword(payload));
+        
+        if (UserResetPassword.fulfilled.match(resultAction)) {
+          toast(
+            <div>
+              <p className="font-medium text-black">{resultAction.payload.message}</p>
+            </div>,
+            {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              type: "success"
+            }
+          );
+          
+          setTimeout(() => {
+            navigate(allPaths.auth.login);
+          }, 2000);
+          
+        } else if (UserResetPassword.rejected.match(resultAction)) {
+          toast.error((resultAction.payload as any)?.message || 'Failed to reset password. Please try again.', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+        }
+      } catch (err: any) {
+        toast.error(err?.message || 'An unexpected error occurred. Please try again.', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
   return (
     <div className="min-h-screen flex">
-      {/* Left side with stethoscope image */}
-      <div className="hidden lg:flex lg:w-1/2 bg-white items-center justify-center p-12">
-        <div className="relative w-full max-w-lg">
-          <img
-            src="/api/placeholder/400/400"
-            alt="Blue stethoscope"
-            className="w-full object-contain"
-          />
-        </div>
-      </div>
-
-      {/* Right side with form */}
+      <ToastContainer />
       <div className="flex-1 flex flex-col justify-center px-4 sm:px-6 lg:px-20 xl:px-24">
         <div className="mx-auto w-full max-w-sm lg:w-96">
           <h1 className="text-3xl font-semibold text-gray-900">Reset Password</h1>
-          
-          <p className="mt-2 text-base text-gray-600">
-            Write a new password. Remember to Note it down in a safe place for easy remembrance
-          </p>
-
           <form onSubmit={handleSubmit} className="mt-8 space-y-6">
             {/* New Password Field */}
             <div>
@@ -83,15 +181,20 @@ const ResetPasswordInitial = () => {
                   name="newPassword"
                   type={showNewPassword ? 'text' : 'password'}
                   value={formData.newPassword}
-                  onChange={(e) => setFormData({ ...formData, newPassword: e.target.value })}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  disabled={isSubmitting || loading}
                   className={`block w-full px-3 py-2 border ${
-                    errors.newPassword ? 'border-red-300' : 'border-gray-300'
-                  } rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500`}
+                    errors.newPassword && touched.newPassword ? 'border-red-300' : 'border-gray-300'
+                  } rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 ${
+                    (isSubmitting || loading) ? 'bg-gray-100' : ''
+                  }`}
                 />
                 <button
                   type="button"
                   className="absolute inset-y-0 right-0 pr-3 flex items-center"
                   onClick={() => setShowNewPassword(!showNewPassword)}
+                  disabled={isSubmitting || loading}
                 >
                   {showNewPassword ? (
                     <EyeOff className="h-5 w-5 text-gray-400" />
@@ -100,7 +203,7 @@ const ResetPasswordInitial = () => {
                   )}
                 </button>
               </div>
-              {errors.newPassword && (
+              {errors.newPassword && touched.newPassword && (
                 <p className="mt-2 text-sm text-red-600">{errors.newPassword}</p>
               )}
             </div>
@@ -116,15 +219,20 @@ const ResetPasswordInitial = () => {
                   name="confirmPassword"
                   type={showConfirmPassword ? 'text' : 'password'}
                   value={formData.confirmPassword}
-                  onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  disabled={isSubmitting || loading}
                   className={`block w-full px-3 py-2 border ${
-                    errors.confirmPassword ? 'border-red-300' : 'border-gray-300'
-                  } rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500`}
+                    errors.confirmPassword && touched.confirmPassword ? 'border-red-300' : 'border-gray-300'
+                  } rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 ${
+                    (isSubmitting || loading) ? 'bg-gray-100' : ''
+                  }`}
                 />
                 <button
                   type="button"
                   className="absolute inset-y-0 right-0 pr-3 flex items-center"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  disabled={isSubmitting || loading}
                 >
                   {showConfirmPassword ? (
                     <EyeOff className="h-5 w-5 text-gray-400" />
@@ -133,7 +241,7 @@ const ResetPasswordInitial = () => {
                   )}
                 </button>
               </div>
-              {errors.confirmPassword && (
+              {errors.confirmPassword && touched.confirmPassword && (
                 <p className="mt-2 text-sm text-red-600">{errors.confirmPassword}</p>
               )}
             </div>
@@ -142,9 +250,14 @@ const ResetPasswordInitial = () => {
             <div>
               <button
                 type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-500 hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
+                disabled={isSubmitting || loading}
+                className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white
+                  ${isSubmitting || loading 
+                    ? 'bg-gray-400 cursor-not-allowed'
+                    : 'bg-pink-500 hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500'
+                  }`}
               >
-                Continue
+                {isSubmitting || loading ? 'Resetting Password...' : 'Continue'}
               </button>
             </div>
           </form>
@@ -154,4 +267,4 @@ const ResetPasswordInitial = () => {
   );
 };
 
-export default ResetPasswordInitial;
+export default ResetPasswordForm;

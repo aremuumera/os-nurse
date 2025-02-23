@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+// import { addAppointment } from '../../redux/appointments/appointmentSlice';
+import { format, isValid } from 'date-fns'; // Import date-fns functions
+import { addAppointment } from '../../redux/appointment/appointment_slice';
 
 interface AppointmentFormData {
   name: string;
@@ -17,7 +23,9 @@ const Appointment = () => {
     time: '',
     description: ''
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const dispatch = useAppDispatch();
+  const { loading } = useAppSelector((state) => state.appointments);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -29,21 +37,69 @@ const Appointment = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Reset form
-    setFormData({
-      name: '',
-      email: '',
-      date: '',
-      time: '',
-      description: ''
-    });
-    setIsSubmitting(false);
+    console.log('formData', formData);
+
+
+    // Validate the date
+    const selectedDate = new Date(formData.date);
+    if (!isValid(selectedDate)) {
+      toast.error('Please select a valid date.', {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      return;
+    }
+
+    // Format the date to 'yyyy-MM-dd' before sending it to the API
+    const formattedDate = format(selectedDate, 'yyyy-MM-dd'); 
+    try {
+      const resultAction = await dispatch(addAppointment({
+        ...formData,
+        date: formattedDate // Use the formatted date
+      }));
+      if (addAppointment.fulfilled.match(resultAction)) {
+        toast.success('Appointment booked successfully!', {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        // Reset form
+        setFormData({
+          name: '',
+          email: '',
+          date: '',
+          time: '',
+          description: ''
+        });
+      } else if (addAppointment.rejected.match(resultAction)) {
+        toast.error((resultAction.payload as any)?.message || 'Failed to book appointment. Please try again.', {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      }
+    } catch (err: unknown) {
+      toast.error((err as { message: string })?.message || 'An unexpected error occurred. Please try again.', {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    }
   };
+
 
   // Generate time slots
   const generateTimeSlots = () => {
@@ -55,21 +111,26 @@ const Appointment = () => {
     return slots;
   };
 
+
+
+
+
+
+
   return (
-    <div className="h-full bg-[#380a48e0]  px-4 pt-28">
-      <div className="mx-auto  max-w-7xl w-full bg-transparent  flex flex-col lg:flex-row">
-        
+    <div className="h-full bg-[#380a48e0] px-4 pt-28">
+      <div className="mx-auto max-w-7xl w-full bg-transparent flex flex-col lg:flex-row">
         {/* Form Section */}
-        <div className="p-8 mb-20 lg:p-12 rounded-3xl bg-white  flex-1">
+        <div className="p-8 mb-20 lg:p-12 rounded-3xl bg-white flex-1">
           <div className="inline-block px-6 text-[20px] py-2 font-[400] rounded-full border-[1px] border-black text-gray-700 mb-6">
             Book an appointment
           </div>
-          
+
           <h1 className="sm:text-3xl text-[22px] lg:text-4xl font-bold text-gray-800 mb-8">
             Book Your Appointment by<br />
             Filling in This Form Below
           </h1>
-          
+
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Name Field */}
@@ -85,7 +146,7 @@ const Appointment = () => {
                   required
                 />
               </div>
-              
+
               {/* Email Field */}
               <div>
                 <label className="block text-gray-700 mb-2">Email</label>
@@ -114,7 +175,7 @@ const Appointment = () => {
                   required
                 />
               </div>
-              
+
               {/* Time Field */}
               <div>
                 <label className="block text-gray-700 mb-2">Time</label>
@@ -149,11 +210,13 @@ const Appointment = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              disabled={isSubmitting}
-              className="w-full bg-primary-mainPink  hover:primary-mainPink text-white font-semibold py-3 rounded-full flex items-center justify-center gap-2 transition-colors disabled:opacity-70"
+              disabled={loading}
+              className="w-full bg-primary-mainPink hover:primary-mainPink text-white font-semibold py-3 rounded-full flex items-center justify-center gap-2 transition-colors disabled:opacity-70"
             >
-              Send Message
-             <span className='bg-white text-primary-mainPink p-2 rounded-full' ><ArrowRight className="w-5 h-5" /></span> 
+              {loading ? 'Booking...' : 'Send Message'}
+              <span className='bg-white text-primary-mainPink p-2 rounded-full'>
+                <ArrowRight className="w-5 h-5" />
+              </span>
             </button>
           </form>
         </div>
@@ -167,6 +230,9 @@ const Appointment = () => {
           />
         </div>
       </div>
+
+      {/* Toast Container */}
+      <ToastContainer />
     </div>
   );
 };

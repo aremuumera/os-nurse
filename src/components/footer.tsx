@@ -26,15 +26,6 @@ const Footer = () => {
             <Link to="/about" className="hover:text-pink-400 transition-colors">
               About
             </Link>
-            <Link to="/team" className="hover:text-pink-400 transition-colors">
-              Team
-            </Link>
-            <Link to="/process" className="hover:text-pink-400 transition-colors">
-              Process
-            </Link>
-            <Link to="/pricing" className="hover:text-pink-400 transition-colors">
-              Pricing
-            </Link>
             <Link to="/blog" className="hover:text-pink-400 transition-colors">
               Blog
             </Link>
@@ -57,18 +48,18 @@ const Footer = () => {
                 className="flex items-center gap-2 text-[] transition-colors"
               >
                 <Mail className="w-4  text-[#E32B8D] h-4" />
-                hello@squareup.com
+                oversabinurse@gmail.com
               </a>
               <a 
                 href="tel:+91918132320 text-[#E32B8D]9" 
                 className="flex items-center gap-2 text-[] transition-colors"
               >
                 <Phone className="w-4 text-[#E32B8D]  h-4" />
-                +91 91813 23 2309
+                +1 (973) 392-31029
               </a>
               <span className="flex items-center gap-2">
                 <MapPin className="w-4 text-[#E32B8D] h-4" />
-                Somewhere in the World
+                United States
               </span>
             </div>
 

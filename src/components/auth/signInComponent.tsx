@@ -1,41 +1,49 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import { allPaths } from '../../utils/path';
-// import ForgotPassword from '../../pages/auth/forgotPassword';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
+import { UserSignin } from '../../redux/authFeature/authApi';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface FormData {
-  name: string;
   email: string;
   password: string;
-  agreeToTerms: boolean;
+  rememberMe?: boolean;
 }
 
 interface FormErrors {
-  name?: string;
   email?: string;
   password?: string;
-  agreeToTerms?: string;
+}
+
+interface SignInResponse {
+  message: string;
+  user: {
+    name: string;
+    email: string;
+    updated_at: string;
+    created_at: string;
+    id: number;
+  };
 }
 
 const SignInForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState<FormData>({
-    name: '',
     email: '',
     password: '',
-    agreeToTerms: false,
+    rememberMe: false
   });
+  const { loading } = useAppSelector((state) => state?.auth);
   const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const dispatch = useAppDispatch();
+  // const navigate = useNavigate();
 
   const validateField = (name: keyof FormData, value: string | boolean): string | undefined => {
     switch (name) {
-      case 'name':
-        if (!value) return 'Name is required';
-        if (typeof value === 'string' && value.length < 2) return 'Name must be at least 2 characters';
-        if (typeof value === 'string' && value.length > 50) return 'Name must be less than 50 characters';
-        return undefined;
-      
       case 'email':
         if (!value) return 'Email is required';
         if (typeof value === 'string' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
@@ -45,16 +53,6 @@ const SignInForm = () => {
       
       case 'password':
         if (!value) return 'Password is required';
-        if (typeof value === 'string') {
-          if (value.length < 8) return 'Password must be at least 8 characters';
-          if (!/\d/.test(value)) return 'Password must contain at least one number';
-          if (!/[a-z]/.test(value)) return 'Password must contain at least one lowercase letter';
-          if (!/[A-Z]/.test(value)) return 'Password must contain at least one uppercase letter';
-        }
-        return undefined;
-      
-      case 'agreeToTerms':
-        if (!value) return 'You must agree to the Terms of Use and Privacy Policy';
         return undefined;
       
       default:
@@ -62,9 +60,7 @@ const SignInForm = () => {
     }
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     const newValue = type === 'checkbox' ? checked : value;
     
@@ -73,7 +69,6 @@ const SignInForm = () => {
       [name]: newValue
     }));
 
-    // Validate on change if the field has been touched
     if (touched[name]) {
       setErrors(prev => ({
         ...prev,
@@ -97,33 +92,80 @@ const SignInForm = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validate all fields
     const newErrors: FormErrors = {};
     (Object.keys(formData) as Array<keyof FormData>).forEach(key => {
-      const error = validateField(key, formData[key]);
-      if (error) newErrors[key] = error;
+      if (key !== 'rememberMe') { // Don't validate remember me checkbox
+        const error = validateField(key, formData[key] as string);
+        if (error) newErrors[key] = error;
+      }
     });
 
-    // Update touched state for all fields
     setTouched({
-      name: true,
       email: true,
-      password: true,
-      agreeToTerms: true
+      password: true
     });
-
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      console.log('Form submitted successfully:', formData);
+      try {
+        const resultAction = await dispatch(UserSignin({
+          email: formData.email,
+          password: formData.password
+        }));
+        
+        if (resultAction.meta.requestStatus === 'fulfilled') {
+          const response = resultAction.payload as SignInResponse;
+          
+          toast.success(
+            <div className="flex flex-col">
+              <p className="font-medium">{response.message}</p>
+              <p className="text-sm mt-1">Welcome back, {response.user.name}!</p>
+            </div>,
+            {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+            }
+          );
+
+          // Wait for toast to be visible before reloading
+          setTimeout(() => {
+            window.location.reload();
+          }, 3000);
+
+        } else {
+          const errorMessage = (resultAction.payload as { message: string })?.message || 'Sign in failed. Please try again.';
+          toast.error(errorMessage, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+        }
+      } catch (err: any) {
+        toast.error(err?.message || 'An unexpected error occurred. Please try again.', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      }
     }
   };
 
   return (
     <div className="min-h-screen flex">
+      <ToastContainer />
       <div className="flex-1 flex flex-col justify-center px-4 sm:px-6 lg:px-20 xl:px-24">
         <div className="mx-auto w-full max-w-sm lg:w-96">
           <div className="text-left">
@@ -194,34 +236,43 @@ const SignInForm = () => {
             <div className="flex items-start">
               <div className="flex items-center h-5">
                 <input
-                  id="agreeToTerms"
-                  name="agreeToTerms"
+                  id="rememberMe"
+                  name="rememberMe"
                   type="checkbox"
-                  checked={formData.agreeToTerms}
+                  checked={formData.rememberMe}
                   onChange={handleChange}
-                  onBlur={handleBlur}
-                  className={`h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-primary-mainPink ${
-                    errors.agreeToTerms && touched.agreeToTerms ? 'border-red-300' : ''
-                  }`}
+                  className="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-primary-mainPink"
                 />
               </div>
-              <div className="ml-2 w-full flex items-center !justify-between ">
-                <label htmlFor="agreeToTerms" className="text-sm block text-gray-400">
-                 Remmeber me{' '}
+              <div className="ml-2 w-full flex items-center !justify-between">
+                <label htmlFor="rememberMe" className="text-sm block text-gray-400">
+                  Remember me
                 </label>
                 <a href={allPaths.auth.forgotPassword} className="text-sm block">forgot password?</a>
               </div>
             </div>
-            {errors.agreeToTerms && touched.agreeToTerms && (
-              <p className="mt-1 text-sm text-red-600">{errors.agreeToTerms}</p>
-            )}
 
             <div>
               <button
+                disabled={loading}
                 type="submit"
-                className="w-full flex justify-center py-3 px-8  border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-primary-mainPink hover:bg-primary-mainPink focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-mainPink "
+                className={`w-full flex justify-center py-3 px-8 border border-transparent rounded-full shadow-sm text-sm font-medium text-white ${
+                  loading 
+                    ? 'bg-gray-400 cursor-not-allowed' 
+                    : 'bg-primary-mainPink hover:bg-primary-mainPink focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-mainPink'
+                }`}
               >
-                Sign In
+                {loading ? (
+                  <div className="flex items-center justify-center">
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Signing in...
+                  </div>
+                ) : (
+                  "Sign In"
+                )}
               </button>
             </div>
           </form>

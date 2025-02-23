@@ -1,13 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Heart } from 'lucide-react';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
+import { useNavigate } from 'react-router-dom';
+import { getBooks } from '../../redux/Books/books_api_slice';
+import { addToCart, CartItem } from '../../redux/Order/order_api_slice';
 
-interface Book {
-  id: number;
-  title: string;
-  author: string;
-  price: number;
-  imageUrl: string;
-}
+
+// interface Book {
+//   id: number;
+//   title: string;
+//   author: string;
+//   price: number;
+//   imageUrl: string;
+// }
 
 interface PromoBook {
   id: number;
@@ -18,42 +23,139 @@ interface PromoBook {
   actionText: string;
 }
 
+export interface Book {
+  id: string;
+  title: string;
+  author: string;
+  uuid: string;
+  price: number;
+  rating_score: string;
+  rating_count: number;
+  description: string;
+  coverImage: string;
+}
+
+export const generateDummyBooks = (count: number): Book[] => {
+  const descriptions = [
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porttitor faucibus aliquet.",
+    "Fusce imperdiet porttitor erat, sit amet viverra nunc gravida quis. Curabitur sapien",
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam posuere consequat eros..."
+  ];
+
+  return Array.from({ length: count }, (_, i) => ({
+    id: `book-${i + 1}`,
+    title: `Natural Healing ${i + 1}`,
+    author: `Dr. Author ${i + 1}`,
+    price: 149.99,
+    uuid: '34vjhk34gughv-345oh3v',
+    rating_score: '550',
+    rating_count: 4.2,
+    description: descriptions[i % descriptions.length],
+    coverImage: `/oversabinurse/pa-1.png`,
+  }));
+};
+
+
 const NewArrivals: React.FC = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [showLeftButton, setShowLeftButton] = useState(false);
   const [showRightButton, setShowRightButton] = useState(true);
+  const { books, loading, error } = useAppSelector((state) => state.books);
+  const [localBooks, setLocalBooks] = useState<Book[]>([]);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const books: Book[] = [
-    {
-      id: 1,
-      title: "A God Who Hates Women",
-      author: "Sabela Hupter",
-      price: 120.00,
-      imageUrl: "/oversabinurse/pa-1.png"
-    },
-    {
-      id: 2,
-      title: "Clinical Medicine Update",
-      author: "MPS Chawla",
-      price: 120.00,
-      imageUrl: "/oversabinurse/pa-2.png"
-    },
-    {
-      id: 3,
-      title: "Life in Summer",
-      author: "Marie Novele",
-      price: 120.00,
-      imageUrl: "/oversabinurse/pa-1.png"
-    },
-    {
-      id: 4,
-      title: "Clinical Practice",
-      author: "Prashant Prakash",
-      price: 120.00,
-      imageUrl: "/oversabinurse/pa-2.png"
-    },
-    // Add more books to enable scrolling
-  ];
+
+  
+  useEffect(() => {
+    dispatch(getBooks());
+    setLocalBooks(generateDummyBooks(48));
+  }, [dispatch]);
+  
+
+
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const checkScroll = () => {
+      setShowLeftButton(container.scrollLeft > 0);
+      setShowRightButton(
+        container.scrollLeft < container.scrollWidth - container.clientWidth - 10
+      );
+    };
+
+    container.addEventListener('scroll', checkScroll);
+    checkScroll(); // Initial check
+
+    // Handle resize
+    const handleResize = () => {
+      checkScroll();
+    };
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      container.removeEventListener('scroll', checkScroll);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+
+
+  const displayedBooks = books.length > 0 ? books : localBooks;
+   console.log('displayedBooks', displayedBooks);
+  
+  const handleBookClick = (bookId: string) => {
+    navigate(`/shop/books/${bookId}`);
+  };
+
+
+  // const handleAddToCart = (e: React.MouseEvent, bookId: string) => {
+  //   e.stopPropagation(); // Prevent navigation when clicking add to cart
+  //   // Add your cart logic here
+  //   console.log('Adding to cart:', bookId);
+  // };
+  console.log('localbooks', localBooks);
+
+
+
+  if (loading) return <div className="text-center py-8">Loading...</div>;
+  if (error) return <div className="text-center py-8 text-red-500">{error}</div>;
+  
+
+
+
+  // const books: Book[] = [
+  //   {
+  //     id: 1,
+  //     title: "A God Who Hates Women",
+  //     author: "Sabela Hupter",
+  //     price: 120.00,
+  //     imageUrl: "/oversabinurse/pa-1.png"
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "Clinical Medicine Update",
+  //     author: "MPS Chawla",
+  //     price: 120.00,
+  //     imageUrl: "/oversabinurse/pa-2.png"
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Life in Summer",
+  //     author: "Marie Novele",
+  //     price: 120.00,
+  //     imageUrl: "/oversabinurse/pa-1.png"
+  //   },
+  //   {
+  //     id: 4,
+  //     title: "Clinical Practice",
+  //     author: "Prashant Prakash",
+  //     price: 120.00,
+  //     imageUrl: "/oversabinurse/pa-2.png"
+  //   },
+  //   // Add more books to enable scrolling
+  // ];
 
   const promoBooks: PromoBook[] = [
     {
@@ -82,31 +184,7 @@ const NewArrivals: React.FC = () => {
     }
   ];
 
-  useEffect(() => {
-    const container = scrollContainerRef.current;
-    if (!container) return;
-
-    const checkScroll = () => {
-      setShowLeftButton(container.scrollLeft > 0);
-      setShowRightButton(
-        container.scrollLeft < container.scrollWidth - container.clientWidth - 10
-      );
-    };
-
-    container.addEventListener('scroll', checkScroll);
-    checkScroll(); // Initial check
-
-    // Handle resize
-    const handleResize = () => {
-      checkScroll();
-    };
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      container.removeEventListener('scroll', checkScroll);
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+ 
 
   const scrollToDirection = (direction: 'left' | 'right') => {
     const container = scrollContainerRef.current;
@@ -129,6 +207,23 @@ const NewArrivals: React.FC = () => {
     });
   };
 
+
+
+  
+  const handleAddToCart = (book: Book) => {
+    const cartItem: CartItem = {
+      id: book.uuid,
+      title: book.title,
+      color: 'Gunnared biege',
+      price: book.price,
+      quantity: 1,
+      coverImage: book.coverImage
+    };
+    dispatch(addToCart(cartItem));
+  };
+
+
+  
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       {/* New Arrivals Section */}
@@ -166,16 +261,17 @@ const NewArrivals: React.FC = () => {
             msOverflowStyle: 'none',
           }}
         >
-          {books.map((book) => (
+          {displayedBooks.map((book) => (
             <div 
               key={book.id} 
-              className="book-card flex-none w-full max-w-[290px] bg-white rounded-lg  snap-center"
+              onClick={() => handleBookClick(book.uuid)}
+              className="book-card flex-none w-full  cursor-pointer max-w-[290px] bg-white rounded-lg  snap-center"
             >
               <div className="relative">
                 <img 
-                  src={book.imageUrl} 
+                  src={book.coverImage || '/oversabinurse/pa-1.png'} 
                   alt={book.title}
-                  className="w-full h-[415px] object-fit rounded-t-lg"
+                  className="w-full h-[415px] object-cover rounded-t-lg"
                 />
                 <button 
                   className="absolute top-4 right-4 p-2 rounded-full bg-white"
@@ -183,7 +279,7 @@ const NewArrivals: React.FC = () => {
                 >
                   <Heart className="w-5 h-5" />
                 </button>
-                <button className="bg-primary-mainPink left-0 right-0 mx-6 absolute font-[400] bottom-4 text-white px-4 py-2 rounded-md hover:bg-pink-600">
+                <button onClick={(e) =>{e.stopPropagation(); handleAddToCart(book)}} className="bg-primary-mainPink left-0 right-0 mx-6 absolute font-[400] bottom-4 text-white px-4 py-2 rounded-md hover:bg-pink-600">
                     Add to cart
                   </button>
               </div>
@@ -191,7 +287,7 @@ const NewArrivals: React.FC = () => {
                 <p className="text-sm text-gray-600">By {book.author}</p>
                 <h3 className="text-lg font-semibold mb-2">{book.title}</h3>
                 <div className="flex justify-between items-center">
-                  <span className="text-primary-mainPink">${book.price.toFixed(2)}</span>
+                  <span className="text-primary-mainPink">${book.price}</span>
                   
                 </div>
               </div>

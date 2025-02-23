@@ -4,7 +4,7 @@
 
 const HeroSection = () => {
   return (
-    <div className="relative  bg-primary-main mb-10 lg:h-[650px] h-[825px] overflow-hidden">
+    <div className="relative  bg-primary-main mb-10 lg:h-[700px] h-[825px] pt-[60px] overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center py-12">
           {/* Left Content */}

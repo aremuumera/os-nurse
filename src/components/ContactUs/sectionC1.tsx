@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronDownIcon, ChevronRightIcon } from 'lucide-react';
 import { IoCallOutline, IoLocationOutline } from 'react-icons/io5';
+import App_Config from '../../utils/config';
 
 interface AppointmentFormData {
   name: string;
@@ -61,7 +62,7 @@ const AppointmentBookingPage: React.FC = () => {
                 </div>
                 <div>
                     <h3 className="font-bold text-lg">Office Address</h3>
-                    <p className="text-gray-600">1441 Morris Ave, Union, NJ 07083</p>
+                    <p className="text-gray-600">{App_Config.address}</p>
                 </div>
                 </div>
             </div>
@@ -70,7 +71,7 @@ const AppointmentBookingPage: React.FC = () => {
           {/* Contact Info Cards */}
           <div className="space-y-6">
             {/* Office Address */}
-            <div className="flex items-start space-x-4 p-4 bg-white rounded-lg shadow-sm">
+            {/* <div className="flex items-start space-x-4 p-4 bg-white rounded-lg shadow-sm">
               <div className="w-12 h-12 bg-purple-900 rounded-full flex items-center justify-center flex-shrink-0">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
                   <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
@@ -79,9 +80,9 @@ const AppointmentBookingPage: React.FC = () => {
               </div>
               <div>
                 <h3 className="font-bold text-lg">Office Address</h3>
-                <p className="text-gray-600">1441 Morris Ave, Union, NJ 07083</p>
+                <p className="text-gray-600">{App_Config.address}</p>
               </div>
-            </div>
+            </div> */}
 
             {/* Office Timings */}
             <div className="flex items-start space-x-4 p-4 bg-white rounded-lg shadow-sm">
@@ -108,7 +109,7 @@ const AppointmentBookingPage: React.FC = () => {
               </div>
               <div>
                 <h3 className="font-bold text-lg">Email Address</h3>
-                <p className="text-gray-600">Smile01@gmail.com</p>
+                <p className="text-gray-600">{App_Config.support_email_1}</p>
               </div>
             </div>
 
@@ -122,7 +123,7 @@ const AppointmentBookingPage: React.FC = () => {
               </div>
               <div>
                 <h3 className="font-bold text-lg">Phone Number</h3>
-                <p className="text-gray-600">+1-2064512559</p>
+                <p className="text-gray-600">{App_Config.phone_number}</p>
               </div>
             </div>
 
@@ -135,7 +136,7 @@ const AppointmentBookingPage: React.FC = () => {
               </div>
               <div>
                 <h3 className="font-bold text-lg">Live Chat</h3>
-                <p className="text-gray-600">+1-2064512559</p>
+                <p className="text-gray-600">{App_Config.phone_number}</p>
               </div>
             </div>
           </div>

@@ -1,26 +1,37 @@
 import React, { useState } from 'react';
 import { Search, ShoppingCart, Menu, X, User } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { allPaths } from '../../utils/path';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
+import { searchBooksByQuery } from '../../redux/Books/books_api_slice';
 
 interface NavbarProps {
-  onCartClick: () => void;
+  // onCartClick: () => void;
   cartItemsCount?: number;
 }
 
-const ShopNavbar = ({ onCartClick, cartItemsCount = 0 }: NavbarProps) => {
+const ShopNavbar = ({ cartItemsCount = 0 }: NavbarProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+    const {  items } = useAppSelector(state => state.order);
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    // Implement search functionality
-    console.log('Searching for:', searchQuery);
+    if (searchQuery.trim()) {
+      dispatch(searchBooksByQuery(searchQuery));
+      navigate(`/shop/search?query=${searchQuery}`); 
+    }
+    setSearchQuery('');
   };
+  
+  
 
   return (
-    <nav className="bg-white shadow-md">
-      <div className="max-w-[1350px] mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className="bg-white fixed top-0 w-full z-[9000] shadow-md">
+      <div className="max-w-[1350px]  mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
@@ -35,8 +46,13 @@ const ShopNavbar = ({ onCartClick, cartItemsCount = 0 }: NavbarProps) => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-16 flex-1 justify-between ml-20">
-            <Link to="/" className="text-gray-700 hover:text-gray-900">
-              Home
+            <Link to="/shop" className="inline-flex gap-2">
+              <span className="">
+                <img src="/oversabinurse/categories.svg" alt="" />
+              </span>
+              <p className="text-gray-700 hover:text-gray-900">
+                Home
+              </p>
             </Link>
 
             {/* Search Bar */}
@@ -58,6 +74,7 @@ const ShopNavbar = ({ onCartClick, cartItemsCount = 0 }: NavbarProps) => {
               </div>
             </form>
 
+
             {/* Auth and Cart */}
             <div className="flex items-center space-x-16">
               <Link
@@ -67,34 +84,33 @@ const ShopNavbar = ({ onCartClick, cartItemsCount = 0 }: NavbarProps) => {
                 <User className="h-5 w-5" />
                 <span>Login/Register</span>
               </Link>
-              <button
-                onClick={onCartClick}
-                className="text-gray-700 hover:text-gray-900 relative"
+              <Link to={'/shop/cart'}
+                className="text-gray-700  hover:text-gray-900 relative"
               >
                 <ShoppingCart className="h-6 w-6 inline mr-2" />
-                {cartItemsCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-pink-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                    {cartItemsCount} 
+                  <span className="absolute -top-2 right-8 bg-pink-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    {items.length > 0 ? items.length : 0} 
                   </span>
-                )}
                 Cart
-              </button>
+              </Link>
             </div>
           </div>
 
+
+
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-4">
-            <button
-              onClick={onCartClick}
+            <Link 
+              to={'/shop/cart'}
               className="text-gray-700 hover:text-gray-900 relative"
             >
               <ShoppingCart className="h-6 w-6" />
-              {cartItemsCount > 0 && (
+
                 <span className="absolute -top-2 -right-2 bg-pink-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  {cartItemsCount}
+                  {items.length > 0 ?  items.length : 0}
                 </span>
-              )}
-            </button>
+            </Link>
+
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="text-gray-700 hover:text-gray-900"
@@ -109,12 +125,14 @@ const ShopNavbar = ({ onCartClick, cartItemsCount = 0 }: NavbarProps) => {
         </div>
       </div>
 
+
+
       {/* Mobile menu */}
       {isMenuOpen && (
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1">
             <Link
-              to="/"
+              to="/shop"
               className="block px-3 py-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-50"
             >
               Home
