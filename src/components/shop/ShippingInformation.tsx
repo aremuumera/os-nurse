@@ -2,7 +2,7 @@ import { ChevronRight } from "lucide-react";
 import OrderSummaryPanel from "./OrderSummary";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../redux/store";
+// import { useAppSelector } from "../../redux/store";
 
 
 
@@ -10,20 +10,20 @@ import { useAppSelector } from "../../redux/store";
 // Shipping Page Component
 export const ShippingPage: React.FC = () => {
     const [email, setEmail] = useState('');
-    const { couponCode } = useAppSelector(state => state.order);
+    // const { couponCode } = useAppSelector(state => state.order);
     const navigate = useNavigate()
   
 
     const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault();
-      const payload = {
-        email,
-        couponCode
-      }
+      // const payload = {
+      //   email,
+      //   couponCode
+      // }
       
-      console.log('couponCode', couponCode, payload);
+      // console.log('couponCode', couponCode, payload);
       navigate('/shop/payment');
-      console.log(email);
+      // console.log(email);
     };
 
  

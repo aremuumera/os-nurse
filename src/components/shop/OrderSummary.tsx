@@ -7,9 +7,10 @@ interface OrderSummaryPanelProps {
     summary?: OrderSummary;
     buttonText: string;
     handleContinue?: () => void;
+    loading?: boolean;
   }
   
- const OrderSummaryPanel: React.FC<OrderSummaryPanelProps> = ({  buttonText, handleContinue }) => {
+ const OrderSummaryPanel: React.FC<OrderSummaryPanelProps> = ({ loading,  buttonText, handleContinue }) => {
     const  { couponCode } = useAppSelector(state => state.order);
     const dispatch = useAppDispatch();
     const { totalAmount } = useAppSelector((state) => state.order);
@@ -63,7 +64,7 @@ interface OrderSummaryPanelProps {
             </button>
           </div>
   
-          <button type="submit" onClick={handleContinue} className="w-full bg-pink-500 text-white py-3 rounded-full hover:bg-pink-600 transition-colors">
+          <button type="submit" disabled={loading} onClick={handleContinue} className={`w-full  text-white py-3 rounded-full hover:bg-pink-600 transition-colors ${loading ? 'bg-slate-300' : "bg-pink-500"}  `}>
             {buttonText}
           </button>
         </div>

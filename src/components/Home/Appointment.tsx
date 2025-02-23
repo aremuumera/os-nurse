@@ -37,7 +37,7 @@ const Appointment = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('formData', formData);
+    // console.log('formData', formData);
 
 
     // Validate the date

@@ -1,8 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { removeFromCart, updateQuantity } from "../../redux/Order/order_api_slice";
+import { initiatePayment, removeFromCart, updateQuantity } from "../../redux/Order/order_api_slice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import  OrderSummaryPage  from "./OrderSummary";
 import React from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { PaymentItem } from "../../redux/Order/order_service";
 
 
 
@@ -17,10 +20,10 @@ export interface OrderSummary {
 export const CartPage: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const { items } = useAppSelector((state) => state.order);
+    const { items, loading } = useAppSelector((state) => state.order);
 
    
- 
+//  console.log('Cart items:', items);
 
     const handleUpdateQuantity = (id: string, quantity: number) => {
         dispatch(updateQuantity({ id, quantity }));
@@ -28,6 +31,35 @@ export const CartPage: React.FC = () => {
 
     const handleRemoveItem = (id: string) => {
         dispatch(removeFromCart(id));
+      };
+
+      const handleContinue = async () => {
+        const itemsForApi: PaymentItem[] = items.map((item) => ({
+          id: item.id,
+          quantity: item.quantity,
+        }));
+        const resultAction = await dispatch(initiatePayment(itemsForApi));
+        // console.log('resultAction', itemsForApi);
+        if (initiatePayment.fulfilled.match(resultAction)) {
+          toast.success((resultAction.payload as any)?.message || 'Payment initiated successfully!', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+          navigate('/shop/shipping-information'); 
+        } else if (initiatePayment.rejected.match(resultAction)) {
+          toast.error((resultAction.payload as any)?.message || 'Payment initiation failed', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+        }
       };
   
     return (
@@ -87,11 +119,14 @@ export const CartPage: React.FC = () => {
                 </div>
               ))}
             </div>
+            <ToastContainer />
+
           </div>
   
           <OrderSummaryPage
-            buttonText="Check Out"
-            handleContinue={() => navigate('/shop/shipping-information')}
+            buttonText={loading ? "submitting..." : "Check Out"}
+            handleContinue={handleContinue}
+            loading={loading}
           />
         </div>
       </div>

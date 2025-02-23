@@ -64,6 +64,7 @@ interface AuthState {
     awaitingOTPVerification: boolean;
 }
 
+
 // interface AuthPayload {
 //     email: string;
 //     medical: any;

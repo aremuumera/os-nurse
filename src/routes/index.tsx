@@ -68,8 +68,8 @@ interface RouteConfig {
       {path:'search', element: <HomeShop />},
       {path:'books/:productDetail', element: <ProductDetail />},
       {path:'cart', element: <ProductCart />},
-      {path:'shipping-information', element: <ShippingInformation />},
-      {path:'payment', element: <Payment />},
+      // {path:'shipping-information', element: <ShippingInformation />},
+      // {path:'payment', element: <Payment />},
     ]
   }
 ];
