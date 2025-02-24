@@ -22,7 +22,7 @@ AxiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('them-os');
     if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`; // Attach auth token
+      config.headers['Authorization'] = `Bearer ${token}`; 
     }
 
     // Attach CSRF token to headers
