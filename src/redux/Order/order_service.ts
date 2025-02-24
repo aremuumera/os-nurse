@@ -1,5 +1,6 @@
 import axios from "axios";
 import { API_HOSTNAME } from "../../utils/config";
+import AxiosInstance from "../../utils/AxiosInstance";
 // import { CartItem } from "../../components/shop/CartPage";
 // import Payment from '../../pages/shop/Payment';
 
@@ -19,7 +20,7 @@ export const orderService = {
       axios.get(`${API_HOSTNAME}/transaction/${orderId}`),
     
     initiatePayment: (items: FinalPaymentItem) =>
-      axios.post(`${API_HOSTNAME}/payments/initiate`, items),
+      AxiosInstance.post(`${API_HOSTNAME}/payments/initiate`, items),
     
     // createOrder: (email: string, items: CartItem[]) =>
     //   axios.post(`${API_HOSTNAME}/orders`, { email, items }),

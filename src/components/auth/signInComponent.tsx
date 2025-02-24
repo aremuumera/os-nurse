@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { UserSignin } from '../../redux/authFeature/authApi';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 interface FormData {
   email: string;
@@ -39,7 +40,7 @@ const SignInForm = () => {
   const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const dispatch = useAppDispatch();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const validateField = (name: keyof FormData, value: string | boolean): string | undefined => {
     switch (name) {
@@ -132,11 +133,10 @@ const SignInForm = () => {
               draggable: true,
             }
           );
-
+          navigate(`${allPaths.shop.shop}`);
           // Wait for toast to be visible before reloading
           setTimeout(() => {
-            window.location.reload();
-          }, 3000);
+          }, 1000);
 
         } else {
           const errorMessage = (resultAction.payload as { message: string })?.message || 'Sign in failed. Please try again.';

@@ -139,7 +139,7 @@ const AuthSlice = createSlice({
                 state.error = null;
                 state.isAuth = true;
                 state.isInitialized = true;
-                localStorage.setItem('them-os', JSON.stringify(action.payload));
+                localStorage.setItem('them-os', action.payload.token);
                 state.status = true;
             })
             .addCase(UserSignin.rejected, (state: AuthState, action: PayloadAction<any>) => {

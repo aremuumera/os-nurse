@@ -1,6 +1,6 @@
 
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { FinalPaymentItem, orderService, PaymentItem } from './order_service';
+import { FinalPaymentItem, orderService } from './order_service';
 
 
 
@@ -148,5 +148,5 @@ const orderSlice = createSlice({
     },
 });
 
-export const { setCouponCode, addToCart, removeFromCart, updateQuantity } = orderSlice.actions;
+export const { setCouponCode, addToCart, removeFromCart, updateQuantity, clearCart } = orderSlice.actions;
 export default orderSlice.reducer;

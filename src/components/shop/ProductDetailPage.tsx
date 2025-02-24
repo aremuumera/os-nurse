@@ -17,6 +17,7 @@ import { Book } from './shopArrivals';
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const { bookDetails, loading, error } = useAppSelector((state) => state.books);
+
     console.log('Adding to cart:', bookDetails, productDetail);
 
 

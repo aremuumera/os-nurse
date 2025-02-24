@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { initiatePayment, removeFromCart, updateQuantity } from "../../redux/Order/order_api_slice";
+import { clearCart, initiatePayment, removeFromCart, updateQuantity } from "../../redux/Order/order_api_slice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import  OrderSummaryPage  from "./OrderSummary";
 import React from 'react';
@@ -21,6 +21,7 @@ export const CartPage: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const { items, loading } = useAppSelector((state) => state.order);
+    const { isAuth } = useAppSelector((state) => state.auth);
 
    
 //  console.log('Cart items:', items);
@@ -38,21 +39,36 @@ export const CartPage: React.FC = () => {
           book_id: item.id,
           quantity: item.quantity,
         }));
-
+      
         const payload: FinalPaymentItem = { items: itemsForApi };
-
+      
         const resultAction = await dispatch(initiatePayment(payload));
-        // console.log('resultAction', itemsForApi);
+      
         if (initiatePayment.fulfilled.match(resultAction)) {
-          toast.success((resultAction.payload as any)?.message || 'Payment initiated successfully!', {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-          });
-          navigate('/shop/shipping-information'); 
+          const checkoutUrl = (resultAction.payload as any)?.checkout_url;
+      
+          if (checkoutUrl) {
+            toast.success('Redirecting to payment...', {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+            });
+            // Redirect to Stripe checkout page
+            window.location.href = checkoutUrl;
+            dispatch(clearCart());
+          } else {
+            toast.error('Payment initiated but no checkout URL received.', {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+            });
+          }
         } else if (initiatePayment.rejected.match(resultAction)) {
           toast.error((resultAction.payload as any)?.message || 'Payment initiation failed', {
             position: "top-right",
@@ -64,7 +80,7 @@ export const CartPage: React.FC = () => {
           });
         }
       };
-  
+      
     return (
       <div className="container mx-auto  px-4 mt-4 sm:mt-14 pt-[100px] pb-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -128,7 +144,7 @@ export const CartPage: React.FC = () => {
   
           <OrderSummaryPage
             buttonText={loading ? "submitting..." : "Check Out"}
-            handleContinue={handleContinue}
+            handleContinue={ isAuth ?  () => handleContinue() : () => navigate('/auth/sign-in')}
             loading={loading}
           />
         </div>

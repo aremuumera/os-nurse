@@ -46,7 +46,7 @@ const SignUpForm = () => {
   const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { loading } = useAppSelector((state) => state?.auth);
 
   const validateField = (name: keyof FormData, value: string | boolean): string | undefined => {

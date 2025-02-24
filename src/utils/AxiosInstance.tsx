@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { API_HOSTNAME } from './config';
-// import { setRequestedLocation, logout } from '@/redux/authslice';
-// import { useLocation } from 'react-router';
-// import { useDispatch, useSelector } from 'react-redux'; // Assuming you have a logout action
+// import { logout } from '../redux/authFeature/authSlice';
+// import { useDispatch } from 'react-redux';
 
 
 // Create an Axios instance
@@ -17,7 +16,8 @@ const AxiosInstance = axios.create({
 // Add a request interceptor to attach the token
 AxiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('themOs'); // Retrieve the token from localStorage
+    const token = localStorage.getItem('them-os'); 
+    // console.log('token', token);
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`; // Attach token to Authorization header
     }
@@ -36,8 +36,10 @@ AxiosInstance.interceptors.response.use(
     return response;
   },
   async (error) => {
-    // if (error.response?.status === 401) {
-    //   logout();
+    if (error.response?.status === 401) {
+      // const dispatch = useDispatch();
+      // dispatch(logout())
+      window.location.href = '/auth/sign-in';
     //   const { requestedLocation } = useSelector((state) => state.auth);
     //   const dispatch = useDispatch();
     //   const { pathname } = useLocation();
@@ -46,7 +48,7 @@ AxiosInstance.interceptors.response.use(
     //   } else {
     //     window.location.href = '/auth/login';
     //   }
-    // }
+    }
     return Promise.reject(error);
   },
 );
