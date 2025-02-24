@@ -4,7 +4,8 @@ import { API_HOSTNAME } from './config';
 // Create an Axios instance
 const AxiosInstance = axios.create({
   baseURL: API_HOSTNAME,
-  withCredentials: true, // Ensure cookies are sent with requests
+  withCredentials: true, 
+  withXSRFToken: true,
 });
 
 // Function to get the CSRF token from cookies
