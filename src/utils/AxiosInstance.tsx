@@ -8,7 +8,6 @@ const AxiosInstance = axios.create({
   withXSRFToken: true,
 });
 
-// Function to get the CSRF token from cookies
 const getCsrfToken = () => {
   const cookieValue = document.cookie
     .split('; ')
