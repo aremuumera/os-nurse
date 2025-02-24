@@ -1,6 +1,8 @@
 import React from "react";
 import { MdOutlineArrowOutward } from "react-icons/md";
 import { motion, useAnimation } from "framer-motion";
+import { Link } from "react-router-dom";
+import { allPaths } from '../../utils/path';
 
 const HeroSection = () => {
   // Animation controls
@@ -189,13 +191,13 @@ const HeroSection = () => {
               animate={buttonControls}
             >
               <div className="flex flex-row bg-[#ffffff33] rounded-full border-[1px] backdrop-blur-sm border-white gap-1 md:gap-0 px-2 py-2 md:px-2">
-                <button className="relative tracking-tighter md:tracking-normal text-[.85rem] md:text-[20px] z-[1200] px-2 md:px-12 py-3 md:py-4 bg-primary-mainPink text-white rounded-full hover:bg-pink-600 transition shadow-lg flex items-center justify-center md:justify-start gap-2 group">
+                <Link to={allPaths.contact} className="relative tracking-tighter md:tracking-normal text-[.85rem] md:text-[20px] z-[1200] px-2 md:px-12 py-3 md:py-4 bg-primary-mainPink text-white rounded-full hover:bg-pink-600 transition shadow-lg flex items-center justify-center md:justify-start gap-2 group">
                   Book a consultation
                   <MdOutlineArrowOutward className="w-5 md:text-[20px] text-[.85rem] h-5 transition-transform group-hover:translate-x-1" />
-                </button>
-                <button className="relative px-2 md:px-8 md:text-[20px] text-[.85rem] py-3 md:py-4 text-white transition">
+                </Link>
+                <Link to={allPaths.contact} className="relative px-2 md:px-8 md:text-[20px] text-[.85rem] py-3 md:py-4 text-white transition">
                   Partner With Us
-                </button>
+                </Link>
               </div>
             </motion.div>
           </div>

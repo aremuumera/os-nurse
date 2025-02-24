@@ -1,5 +1,7 @@
 // import React from 'react';
 import { MdOutlineArrowOutward } from 'react-icons/md';
+import { Link } from 'react-router-dom';
+import { allPaths } from '../../utils/path';
 
 // interface ImpactSectionProps {
 //   title: string;
@@ -42,12 +44,12 @@ const AboutSection = () => {
             <p className="text-[#98A2B3] text-base  leading-relaxed mb-6">
               {"OverSabiNurse's mission is to simplify complex medical and lifestyle information into easy-to-understand concepts. Through engaging social media content and detailed YouTube videos, the goal is to provide people with the knowledge needed to make informed health decisions"}
             </p>
-            <button
+            <Link to={allPaths.about}
               className="inline-flex items-center px-6 py-3 rounded-full border border-pink-500 text-pink-500 hover:bg-pink-50 transition-colors duration-200"
             >
               {'Read More'}
               <MdOutlineArrowOutward className="ml-2 h-4 w-4" />
-            </button>
+            </Link>
           </div>
         </div>
       </div>

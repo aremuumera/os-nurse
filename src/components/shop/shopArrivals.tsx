@@ -146,6 +146,7 @@ const NewArrivals: React.FC = () => {
   if (error) return <div className="text-center py-8 text-red-500">{error}</div>;
   
 
+  
 
 
   // const books: Book[] = [

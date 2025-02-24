@@ -25,6 +25,7 @@ const ShopNavbar = () => {
       navigate(`/shop/search?query=${searchQuery}`); 
     }
     setSearchQuery('');
+    setIsMenuOpen(!isMenuOpen)
   };
   
   
@@ -133,12 +134,14 @@ const ShopNavbar = () => {
           <div className="px-2 pt-2 pb-3 space-y-1">
             <Link
               to="/shop"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="block px-3 py-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-50"
             >
               Home
             </Link>
             <Link
               to={allPaths.auth.login}
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="block px-3 py-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-50"
             >
               Login/Register

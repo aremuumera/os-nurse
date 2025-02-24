@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ArrowLeft, ArrowRight, } from 'lucide-react';
 import { MdOutlineArrowOutward } from 'react-icons/md';
+import { Link } from 'react-router-dom';
+import { allPaths } from '../../utils/path';
 
 interface BlogArticle {
   id: number;
@@ -93,12 +95,12 @@ const BlogArticleCarousel: React.FC = () => {
         <p className="text-[#98A2B3] max-w-2xl mb-8">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam hendrerit metus ex, id ullamcorper massa accumsan volutpat.
         </p>
-        <a href="/blog" className="inline-flex gap-4 items-center bg-primary-mainPink text-white px-6 py-3 rounded-full hover:bg-pink-600 transition-colors">
+        <Link  to={allPaths.blog} className="inline-flex gap-4 items-center bg-primary-mainPink text-white px-6 py-3 rounded-full hover:bg-pink-600 transition-colors">
           See More Articles
             <span className="bg-white  text-primary-mainPink p-2 rounded-full">
                 <ArrowRight className="w-4 h-4" />
               </span> 
-         </a>
+         </Link>
       </div>
 
 

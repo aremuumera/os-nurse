@@ -1,9 +1,26 @@
-
-
-
-
+import React, { useState } from 'react';
+import YouTube from 'react-youtube'; // Optional: For better control over the YouTube player
 
 const LandingPage = () => {
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+
+  // YouTube video ID (extracted from the URL)
+  const youtubeVideoId = 'TUwCutSyLOHoBcQR'; // Replace with the actual video ID
+
+  // Options for the YouTube player
+  const opts = {
+    height: '100%',
+    width: '100%',
+    playerVars: {
+      autoplay: 1, // Autoplay when the video starts
+    },
+  };
+
+  // Handle play button click
+  const handlePlayButtonClick = () => {
+    setIsVideoPlaying(true);
+  };
+
   return (
     <div className="h-full relative mt-4 lg:mt-12 !z-[22200] bg-primary-main overflow-hidden">
       {/* Hero Section with Video */}
@@ -17,19 +34,34 @@ const LandingPage = () => {
           </p>
         </div>
 
-
-        <div className="w-full max-w-7xl mx-auto flex justify-center items-center">
-          <img src="/youtube-img.png" alt="" />
-        </div>
-        
         {/* Video Section */}
-        {/* <div className="relative mt-10 w-full max-w-7xl mx-auto aspect-video bg-gray-800 rounded-lg overflow-hidden">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <button className="w-16 h-16 bg-primary-main rounded-full flex items-center justify-center hover:bg-pink-600 transition">
-              <Play className="w-8 h-8 text-white" />
-            </button>
-          </div>
-        </div> */}
+        <div className="relative mt-10 w-full max-w-7xl mx-auto aspect-video bg-gray-800 rounded-lg overflow-hidden">
+          {isVideoPlaying ? (
+            // YouTube iframe or react-youtube player
+            <YouTube
+              videoId={youtubeVideoId}
+              opts={opts}
+              className="w-full h-full"
+            />
+          ) : (
+            // Play button overlay
+            <div className="absolute inset-0 flex items-center justify-center">
+              <button
+                onClick={handlePlayButtonClick}
+                className="w-24 h-24 bg-primary-main rounded-full flex items-center justify-center hover:bg-pink-600 transition"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-12 h-12 text-white"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </button>
+            </div>
+          )}
+        </div>
       </section>
     </div>
   );
