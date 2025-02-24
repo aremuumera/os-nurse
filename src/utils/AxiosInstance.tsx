@@ -17,6 +17,8 @@ const getCsrfToken = () => {
   return cookieValue;
 };
 
+
+
 // Add a request interceptor to attach the token
 AxiosInstance.interceptors.request.use(
   (config) => {
@@ -52,3 +54,8 @@ AxiosInstance.interceptors.response.use(
 );
 
 export default AxiosInstance;
+
+
+
+
+
