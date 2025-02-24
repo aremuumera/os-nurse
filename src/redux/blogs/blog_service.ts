@@ -21,6 +21,7 @@ export interface BlogDetails {
     uuid?: string;
     author?: string;
     cover_url?: string;
+    image_url?: string;
 }
 
 // Fetch all blogs

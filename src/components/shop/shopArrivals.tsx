@@ -14,14 +14,14 @@ import { addToCart, CartItem } from '../../redux/Order/order_api_slice';
 //   imageUrl: string;
 // }
 
-interface PromoBook {
-  id: number;
-  title: string;
-  discount: number;
-  category: string;
-  imageUrl: string;
-  actionText: string;
-}
+// interface PromoBook {
+//   id: number;
+//   title: string;
+//   discount: number;
+//   category: string;
+//   imageUrl: string;
+//   actionText: string;
+// }
 
 export interface Book {
   id: string;
