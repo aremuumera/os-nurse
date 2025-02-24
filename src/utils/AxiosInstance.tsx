@@ -12,19 +12,11 @@ const AxiosInstance = axios.create({
 
 
 
-// Fetch and store CSRF token
-const fetchCSRFToken = async () => {
-  try {
-    await AxiosInstance.get("/sanctum/csrf-cookie"); // Laravel CSRF endpoint
-  } catch (error) {
-    console.error("CSRF Token Fetch Error:", error);
-  }
-};
+
 
 // Add a request interceptor to attach the token
 AxiosInstance.interceptors.request.use(
-async  (config) => {
-    await fetchCSRFToken();
+ (config) => {
     const token = localStorage.getItem('them-os'); 
     // console.log('token', token);
     if (token) {
