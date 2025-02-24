@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import axios, { AxiosResponse } from "axios";
+import  { AxiosResponse } from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { API_HOSTNAME } from "../../utils/config";
 import AxiosInstance from "../../utils/AxiosInstance";
