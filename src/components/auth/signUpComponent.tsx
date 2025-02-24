@@ -163,11 +163,10 @@ const SignUpForm = () => {
               type: "success"
             }
           );
-          
-          setTimeout(() => {
-            window.location.reload();
-            navigate(`${allPaths.auth.verifyCode}`);
-          }, 2000);
+          // setTimeout(() => {
+          //   window.location.reload();
+          //   navigate(`${allPaths.auth.verifyCode}`);
+          // }, 2000);
           
         } else if (UserSignup.rejected.match(resultAction)) {
           toast.error((resultAction.payload as any)?.message || 'Registration failed. Please try again.', {

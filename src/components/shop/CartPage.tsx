@@ -5,7 +5,7 @@ import  OrderSummaryPage  from "./OrderSummary";
 import React from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { PaymentItem } from "../../redux/Order/order_service";
+import { FinalPaymentItem, PaymentItem } from "../../redux/Order/order_service";
 
 
 
@@ -35,10 +35,13 @@ export const CartPage: React.FC = () => {
 
       const handleContinue = async () => {
         const itemsForApi: PaymentItem[] = items.map((item) => ({
-          id: item.id,
+          book_id: item.id,
           quantity: item.quantity,
         }));
-        const resultAction = await dispatch(initiatePayment(itemsForApi));
+
+        const payload: FinalPaymentItem = { items: itemsForApi };
+
+        const resultAction = await dispatch(initiatePayment(payload));
         // console.log('resultAction', itemsForApi);
         if (initiatePayment.fulfilled.match(resultAction)) {
           toast.success((resultAction.payload as any)?.message || 'Payment initiated successfully!', {

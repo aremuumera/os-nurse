@@ -1,6 +1,6 @@
 
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { orderService, PaymentItem } from './order_service';
+import { FinalPaymentItem, orderService, PaymentItem } from './order_service';
 
 
 
@@ -17,8 +17,8 @@ export const getOrder = createAsyncThunk(
 
 export const initiatePayment = createAsyncThunk(
   'order/initiatePayment',
-  async (items: PaymentItem[]) => {
-    const response = await orderService.initiatePayment(items);
+  async (payload: FinalPaymentItem) => {
+    const response = await orderService.initiatePayment(payload);
     return response.data;
   }
 );
