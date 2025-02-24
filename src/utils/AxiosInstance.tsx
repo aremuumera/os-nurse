@@ -4,14 +4,16 @@ import { API_HOSTNAME } from './config';
 // Create an Axios instance
 const AxiosInstance = axios.create({
   baseURL: API_HOSTNAME,
-  withCredentials: true, // Ensure cookies (including CSRF tokens) are sent with requests
+  withCredentials: true, // Ensure cookies are sent with requests
 });
 
-// Function to get the CSRF token (example: from a meta tag or cookie)
+// Function to get the CSRF token from cookies
 const getCsrfToken = () => {
-  // Example: Retrieve CSRF token from a meta tag
-  const metaTag = document.querySelector('meta[name="csrf-token"]');
-  return metaTag ? (metaTag as HTMLMetaElement).content : null;
+  const cookieValue = document.cookie
+    .split('; ')
+    .find((row) => row.startsWith('XSRF-TOKEN='))
+    ?.split('=')[1];
+  return cookieValue;
 };
 
 // Add a request interceptor to attach the token
@@ -25,7 +27,7 @@ AxiosInstance.interceptors.request.use(
     // Attach CSRF token to headers
     const csrfToken = getCsrfToken();
     if (csrfToken) {
-      config.headers['X-CSRF-TOKEN'] = csrfToken; // Common header name for CSRF tokens
+      config.headers['X-XSRF-TOKEN'] = csrfToken; // Common header name for CSRF tokens
     }
 
     return config;
