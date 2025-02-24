@@ -2,6 +2,7 @@ import Layout from '../layout/index';
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 import withLazyLoading from '../utils/Loader';
 import { lazy } from 'react';
+import NotFoundPage from '../utils/page404';
 // import ShippingInformation from '../pages/shop/ShippingInformation';
 
 
@@ -42,6 +43,7 @@ interface RouteConfig {
       { path:'/blog', element: <Blog /> },
       { path:'/blog/:blogDetail', element: <BlogDetail/> },
       { path:'/contact', element: <Contact /> },
+      { path:'*', element: <NotFoundPage /> },
     ],
   },
   {
@@ -56,6 +58,7 @@ interface RouteConfig {
       {path:'reset-password', element: <ResetPassword />},
       {path:'forgot-password', element: <ForgotPassword />},
       {path:'verify-code', element: <VerifyCode />},
+      { path:'*', element: <NotFoundPage /> },
     ]
   },
   {
@@ -70,6 +73,7 @@ interface RouteConfig {
       {path:'cart', element: <ProductCart />},
       // {path:'shipping-information', element: <ShippingInformation />},
       // {path:'payment', element: <Payment />},
+      { path:'*', element: <NotFoundPage /> },
     ]
   }
 ];

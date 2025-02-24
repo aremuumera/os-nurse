@@ -65,7 +65,6 @@ const NewArrivals: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-
   
   useEffect(() => {
     dispatch(getBooks());

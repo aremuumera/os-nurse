@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosResponse } from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { API_HOSTNAME } from "../../utils/config";
+import AxiosInstance from "../../utils/AxiosInstance";
 
 
 
@@ -37,7 +38,7 @@ import { API_HOSTNAME } from "../../utils/config";
     export const addToNewsLetter = (
     data: SuscriberData
     ): Promise<AxiosResponse<SuscriberResponse>> => {
-    return axios.post(`${API_HOSTNAME}/subscriber`, data);
+    return AxiosInstance.post(`${API_HOSTNAME}/subscriber`, data);
     };
 
 
