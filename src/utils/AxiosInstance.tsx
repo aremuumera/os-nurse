@@ -8,7 +8,41 @@ const AxiosInstance = axios.create({
   withXSRFToken: true,
 });
 
-const getCsrfToken = () => {
+AxiosInstance.interceptors.request.use(
+  (config) => {
+    console.log('Request:', config);
+    const token = localStorage.getItem('them-os');
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`; 
+    }
+
+    // Attach CSRF token to headers
+    const csrfToken = getCsrfToken();
+    if (csrfToken) {
+      config.headers['X-XSRF-TOKEN'] = csrfToken; // Common header name for CSRF tokens
+    }
+
+    return config;
+  },
+  (error) => {
+    console.error('Request Error:', error);
+    return Promise.reject(error);
+  },
+);
+
+AxiosInstance.interceptors.response.use(
+  (response) => {
+    console.log('Response:', response);
+    return response;
+  },
+  async (error) => {
+    console.error('Response Error:', error);
+    if (error.response?.status === 401) {
+      window.location.href = '/auth/sign-in';
+    }
+    return Promise.reject(error);
+  },
+);const getCsrfToken = () => {
   const cookieValue = document.cookie
     .split('; ')
     .find((row) => row.startsWith('XSRF-TOKEN='))
@@ -37,7 +71,7 @@ AxiosInstance.interceptors.request.use(
   },
 );
 
-// Adding a response interceptor to handle 401 errors (invalid/expired token)
+
 AxiosInstance.interceptors.response.use(
   (response) => {
     return response;
