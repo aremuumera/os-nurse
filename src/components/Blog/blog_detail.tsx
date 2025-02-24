@@ -44,7 +44,7 @@ const BlogDetailsPage: React.FC = () => {
 </div>
 </div>;
 
-  if (error) return <div className="text-center py-8 text-red-500">{error}</div>;
+  if (error) return <div className="text-center py-8  text-red-500">{error}</div>;
   if (!blogDetails) return null;
 
   return (
@@ -76,7 +76,7 @@ const BlogDetailsPage: React.FC = () => {
       </div>
       
       <img
-        src={blogDetails.cover_url || '/Frame 1000009724.png'}
+        src={blogDetails.image_url || '/Frame 1000009724.png'}
         alt={ 'oversabi Blog Details'}
         className="w-full h-96 object-cover rounded-lg mb-8"
       />

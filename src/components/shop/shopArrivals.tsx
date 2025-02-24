@@ -181,32 +181,32 @@ const NewArrivals: React.FC = () => {
   //   // Add more books to enable scrolling
   // ];
 
-  const promoBooks: PromoBook[] = [
-    {
-      id: 1,
-      title: "Red Rising",
-      discount: 35,
-      category: "New Release",
-      imageUrl: "/oversabinurse/pb-1.svg",
-      actionText: "Shop Now"
-    },
-    {
-      id: 2,
-      title: "Jade City",
-      discount: 35,
-      category: "Pre Order Now",
-      imageUrl: "/oversabinurse/pb-2.png",
-      actionText: "Shop Now"
-    },
-    {
-      id: 3,
-      title: "Last Stand in Lychford",
-      discount: 45,
-      category: "Top Rated",
-      imageUrl: "/oversabinurse/pb-3.png",
-      actionText: "Shop Now"
-    }
-  ];
+  // const promoBooks: PromoBook[] = [
+  //   {
+  //     id: 1,
+  //     title: "Red Rising",
+  //     discount: 35,
+  //     category: "New Release",
+  //     imageUrl: "/oversabinurse/pb-1.svg",
+  //     actionText: "Shop Now"
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "Jade City",
+  //     discount: 35,
+  //     category: "Pre Order Now",
+  //     imageUrl: "/oversabinurse/pb-2.png",
+  //     actionText: "Shop Now"
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Last Stand in Lychford",
+  //     discount: 45,
+  //     category: "Top Rated",
+  //     imageUrl: "/oversabinurse/pb-3.png",
+  //     actionText: "Shop Now"
+  //   }
+  // ];
 
  
 
@@ -324,7 +324,7 @@ const NewArrivals: React.FC = () => {
       </div>
 
       {/* Promotional Books Section */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {promoBooks.map((book) => (
           <div 
             key={book.id}
@@ -350,7 +350,7 @@ const NewArrivals: React.FC = () => {
             </div>
           </div>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };

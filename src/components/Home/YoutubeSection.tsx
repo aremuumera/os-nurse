@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import YouTube from 'react-youtube'; // Optional: For better control over the YouTube player
 
 const LandingPage = () => {

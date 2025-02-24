@@ -7,6 +7,7 @@ import { API_HOSTNAME } from './config';
 // Create an Axios instance
 const AxiosInstance = axios.create({
   baseURL: API_HOSTNAME,
+  withCredentials: true,
 });
 
 
@@ -16,6 +17,7 @@ const AxiosInstance = axios.create({
 // Add a request interceptor to attach the token
 AxiosInstance.interceptors.request.use(
   (config) => {
+    
     const token = localStorage.getItem('them-os'); 
     // console.log('token', token);
     if (token) {

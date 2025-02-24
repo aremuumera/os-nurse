@@ -2,7 +2,7 @@ import Layout from '../layout/index';
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 import withLazyLoading from '../utils/Loader';
 import { lazy } from 'react';
-import ShippingInformation from '../pages/shop/ShippingInformation';
+// import ShippingInformation from '../pages/shop/ShippingInformation';
 
 
 const Home = withLazyLoading(lazy(() => import('../pages/web/Home')));
@@ -17,7 +17,7 @@ const VerifyCode = withLazyLoading(lazy(() => import('../pages/auth/verifyCode')
 const HomeShop = withLazyLoading(lazy(() => import('../pages/shop/HomeShop')));
 const ProductDetail = withLazyLoading(lazy(() => import('../pages/shop/ProductDetail')));
 const ProductCart = withLazyLoading(lazy(() => import('../pages/shop/Cart')));
-const Payment = withLazyLoading(lazy(() => import('../pages/shop/Payment')));
+// const Payment = withLazyLoading(lazy(() => import('../pages/shop/Payment')));
 const BlogDetail = withLazyLoading(lazy(() => import('../pages/web/BlogDetail')));
 
 
