@@ -31,7 +31,10 @@ const { isAuth } = useAppSelector((state) => state.auth);
   };
   const getUser = localStorage.getItem('them-user');
   
+  const user = getUser ? JSON.parse(getUser) : null;
 
+
+  
   return (
     <nav className="bg-white fixed top-0 w-full z-[9000] shadow-md">
       <div className="max-w-[1350px]  mx-auto px-4 sm:px-6 lg:px-8">
@@ -85,7 +88,7 @@ const { isAuth } = useAppSelector((state) => state.auth);
                 className="text-gray-700 hover:text-gray-900 flex items-center space-x-1"
               >
                 <User className="h-5 w-5" />
-                <span>{isAuth && getUser ? `Welcome back ${getUser}` :'Login/Register'}</span>
+                <span>{isAuth && getUser ? `Welcome back ${user.name}` :'Login/Register'}</span>
               </Link>
               <Link to={'/shop/cart'}
                 className="text-gray-700  hover:text-gray-900 relative"
@@ -146,7 +149,7 @@ const { isAuth } = useAppSelector((state) => state.auth);
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="block px-3 py-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-50"
             >
-             {isAuth && getUser ?`Welcome back ${getUser}` :'Login/Register'}
+             {isAuth && getUser  ?`Welcome back ${user.name}` :'Login/Register'}
             </Link>
             <form onSubmit={handleSearch} className="px-3 py-2">
               <div className="relative">

@@ -57,7 +57,7 @@ const AppointmentBookingPage: React.FC = () => {
     const formattedDate = format(selectedDate, 'yyyy-MM-dd');
     
     // Format time to include seconds as required by the API
-    const formattedTime = `${formData.time}:00`;
+    const formattedTime = formData.time;
     
     // Prepare the data according to the required payload structure
     const appointmentData = {

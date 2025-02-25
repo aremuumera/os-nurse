@@ -102,7 +102,7 @@ const NewArrivals: React.FC = () => {
 
 
   const displayedBooks = books.length > 0 ? books : localBooks;
-   console.log('displayedBooks', displayedBooks);
+  //  console.log('displayedBooks', displayedBooks);
   
   const handleBookClick = (bookId: string) => {
     navigate(`/shop/books/${bookId}`);
@@ -114,7 +114,7 @@ const NewArrivals: React.FC = () => {
   //   // Add your cart logic here
   //   console.log('Adding to cart:', bookId);
   // };
-  console.log('localbooks', localBooks);
+  // console.log('localbooks', localBooks);
 
 
 

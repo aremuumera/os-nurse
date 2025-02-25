@@ -10,7 +10,7 @@ const AxiosInstance = axios.create({
 
 AxiosInstance.interceptors.request.use(
   (config) => {
-    console.log('Request:', config);
+    // console.log('Request:', config);
     const token = localStorage.getItem('them-os');
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`; 
@@ -25,18 +25,18 @@ AxiosInstance.interceptors.request.use(
     return config;
   },
   (error) => {
-    console.error('Request Error:', error);
+    // console.error('Request Error:', error);
     return Promise.reject(error);
   },
 );
 
 AxiosInstance.interceptors.response.use(
   (response) => {
-    console.log('Response:', response);
+    // console.log('Response:', response);
     return response;
   },
   async (error) => {
-    console.error('Response Error:', error);
+    // console.error('Response Error:', error);
     if (error.response?.status === 401) {
       window.location.href = '/auth/sign-in';
     }
