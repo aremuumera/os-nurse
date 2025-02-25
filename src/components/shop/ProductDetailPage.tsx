@@ -44,7 +44,8 @@ import { Book } from './shopArrivals';
           color: 'Gunnared biege',
           price: book.price,
           quantity: 1,
-          coverImage: book.coverImage
+          coverImage: book.coverImage,
+          cover_image_url: book.cover_image_url
         };
         dispatch(addToCart(cartItem));
         navigate('/shop/cart');
