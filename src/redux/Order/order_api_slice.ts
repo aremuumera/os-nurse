@@ -32,6 +32,7 @@ export interface CartItem {
     price: number;
     quantity: number;
     coverImage: string;
+    cover_image_url: string;
   }
 
 

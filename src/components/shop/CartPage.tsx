@@ -94,7 +94,7 @@ export const CartPage: React.FC = () => {
               {items.map(item => (
                 <div key={item.id} className="flex gap-6 border-b pb-6">
                   <img
-                  src={item.coverImage || '/oversabinurse/home-book-11.svg'}
+                  src={item.cover_image_url || '/oversabinurse/home-book-11.svg'}
                   alt={item.title}
                     className="w-24 h-32 object-cover rounded"
                   />
