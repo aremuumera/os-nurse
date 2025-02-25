@@ -33,6 +33,7 @@ export interface Book {
   rating_count: number;
   description: string;
   coverImage: string;
+  cover_image_url: string;
 }
 
 export const generateDummyBooks = (count: number): Book[] => {
@@ -52,6 +53,7 @@ export const generateDummyBooks = (count: number): Book[] => {
     rating_count: 4.2,
     description: descriptions[i % descriptions.length],
     coverImage: `/oversabinurse/pa-1.png`,
+    cover_image_url: `/oversabinurse/pa-1.png`
   }));
 };
 
@@ -292,7 +294,7 @@ const NewArrivals: React.FC = () => {
             >
               <div className="relative">
                 <img 
-                  src={book.coverImage || '/oversabinurse/pa-1.png'} 
+                  src={book.cover_image_url || '/oversabinurse/pa-1.png'} 
                   alt={book.title}
                   className="w-full h-[415px] object-cover rounded-t-lg"
                 />

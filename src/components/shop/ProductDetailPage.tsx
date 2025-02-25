@@ -51,7 +51,7 @@ import { Book } from './shopArrivals';
       };
 
 
-      
+
   
     const renderContent = () => {
       if (loading) {
@@ -116,7 +116,7 @@ import { Book } from './shopArrivals';
          {/* the images */}
           <div className="relative">
             <img
-              src={bookDetails.coverImage ||  '/oversabinurse/home-book-11.svg'}
+              src={bookDetails.cover_image_url ||  '/oversabinurse/home-book-11.svg'}
               alt={bookDetails.title}
               className=""
             />

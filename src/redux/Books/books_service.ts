@@ -13,6 +13,7 @@ export interface Book {
     rating_count: number;
     description: string;
     coverImage: string;
+    cover_image_url: string;
 }
 
 // Type for Book Details
@@ -26,6 +27,7 @@ export interface BookDetails {
     rating_count: number;
     description: string;
     coverImage: string;
+    cover_image_url: string;
 }
 
 // Fetch all books
