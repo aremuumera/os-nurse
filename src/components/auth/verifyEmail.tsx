@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { CheckCircle, XCircle } from 'lucide-react';
 import { toast, ToastContainer,  } from 'react-toastify';
-import { VerifyEmail } from '../../redux/authFeature/authApi';
-import { useAppDispatch, useAppSelector } from '../../redux/store';
+// import { VerifyEmail } from '../../redux/authFeature/authApi';
+import {  useAppSelector } from '../../redux/store';
 import { allPaths } from '../../utils/path';
 
 // Assuming you have an API service setup
@@ -15,7 +15,7 @@ const EmailVerification: React.FC = () => {
 //   const [loading, setLoading] = useState(true);
   const [verified, setVerified] = useState(false);
   const [error, setError] = useState('');
-   const dispatch = useAppDispatch();
+  //  const dispatch = useAppDispatch();
     const { loading } = useAppSelector((state) => state?.auth);
   
   useEffect(() => {
@@ -40,7 +40,7 @@ const EmailVerification: React.FC = () => {
         }
 
         // Call the verification API
-        const response = await dispatch(VerifyEmail({ token }))
+        // const response = await dispatch(VerifyEmail({ token }))
         
         setVerified(true);
         // setLoading(false);
@@ -66,7 +66,7 @@ const EmailVerification: React.FC = () => {
       // Assuming there's an endpoint to resend verification email
       // await resendVerificationEmail(email);
       toast.info('Verification email has been resent');
-    } catch (error) {
+    } catch {
       toast.error('Failed to resend verification email');
     }
   };

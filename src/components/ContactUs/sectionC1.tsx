@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, ChevronDownIcon, ChevronRightIcon } from 'lucide-react';
+import { ArrowRight} from 'lucide-react';
 import { IoCallOutline, IoLocationOutline } from 'react-icons/io5';
 import App_Config from '../../utils/config';
 import { addAppointment } from '../../redux/appointment/appointment_api';

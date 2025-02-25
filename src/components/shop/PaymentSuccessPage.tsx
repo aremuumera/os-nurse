@@ -33,8 +33,8 @@ const PaymentSuccess: React.FC = () => {
     }, 1000);
 
     // Get payment session ID from URL if needed
-    const queryParams = new URLSearchParams(location.search);
-    const sessionId = queryParams.get('session_id');
+    // const queryParams = new URLSearchParams(location.search);
+    // const sessionId = queryParams.get('session_id');
 
     // Here you would fetch payment details with the session ID
     // If you have this implemented, uncomment and use the below
