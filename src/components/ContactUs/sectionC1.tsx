@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
-import { ChevronDownIcon, ChevronRightIcon } from 'lucide-react';
+import { ArrowRight, ChevronDownIcon, ChevronRightIcon } from 'lucide-react';
 import { IoCallOutline, IoLocationOutline } from 'react-icons/io5';
 import App_Config from '../../utils/config';
+import { addAppointment } from '../../redux/appointment/appointment_api';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
+import { format, isValid } from 'date-fns'; // Import date-fns functions
+import { ToastContainer, toast } from 'react-toastify';
 
 interface AppointmentFormData {
   name: string;
@@ -19,9 +23,11 @@ const AppointmentBookingPage: React.FC = () => {
     time: '',
     description: '',
   });
+   const dispatch = useAppDispatch();
+   const { loading } = useAppSelector((state) => state.appointments);
+ 
 
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
       ...prevState,
@@ -30,11 +36,89 @@ const AppointmentBookingPage: React.FC = () => {
   };
 
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission logic here
-    // console.log(formData);
-    alert('Appointment request submitted!');
+    
+    // Validate the date
+    const selectedDate = new Date(formData.date);
+    if (!isValid(selectedDate)) {
+      toast.error('Please select a valid date.', {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      return;
+    }
+
+    // Format the date to 'yyyy-MM-dd' before sending it to the API
+    const formattedDate = format(selectedDate, 'yyyy-MM-dd');
+    
+    // Format time to include seconds as required by the API
+    const formattedTime = `${formData.time}:00`;
+    
+    // Prepare the data according to the required payload structure
+    const appointmentData = {
+      name: formData.name,
+      email: formData.email,
+      appointment_date: formattedDate,
+      appointment_time: formattedTime,
+      description: formData.description
+    };
+// console.log("appointmentData", appointmentData)
+    try {
+      const resultAction = await dispatch(addAppointment(appointmentData));
+      
+      if (addAppointment.fulfilled.match(resultAction)) {
+        toast.success('Appointment booked successfully!', {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        // Reset form
+        setFormData({
+          name: '',
+          email: '',
+          date: '',
+          time: '',
+          description: ''
+        });
+      } else if (addAppointment.rejected.match(resultAction)) {
+        toast.error((resultAction.payload as any)?.message || 'Failed to book appointment. Please try again.', {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      }
+    } catch (err: unknown) {
+      toast.error((err as { message: string })?.message || 'An unexpected error occurred. Please try again.', {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    }
+  };
+
+
+   // Generate time slots
+   const generateTimeSlots = () => {
+    const slots = [];
+    for (let i = 9; i <= 17; i++) {
+      slots.push(`${i}:00`);
+      slots.push(`${i}:30`);
+    }
+    return slots;
   };
 
 
@@ -187,55 +271,37 @@ const AppointmentBookingPage: React.FC = () => {
               </div>
             </div>
 
+
             <div className="grid md:grid-cols-2 gap-6">
               {/* Date Field */}
               <div>
-                <label htmlFor="date" className="block mb-2 font-medium">Date</label>
-                <div className="relative">
-                  <select
-                    id="date"
-                    name="date"
-                    value={formData.date}
-                    onChange={(e) => setFormData({...formData, date: e.target.value})}
-                    className="appearance-none w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pink-500"
-                    required
-                  >
-                    <option value="" disabled selected>Choose Date</option>
-                    <option value="2025-02-18">February 18, 2025</option>
-                    <option value="2025-02-19">February 19, 2025</option>
-                    <option value="2025-02-20">February 20, 2025</option>
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                    <ChevronDownIcon className="h-5 w-5" />
-                  </div>
-                </div>
+                <label className="block text-gray-700 mb-2">Date</label>
+                <input
+                  type="date"
+                  name="date"
+                  value={formData.date}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:bg-primary-mainPink focus:border-transparent transition-all"
+                  required
+                />
               </div>
+
 
               {/* Time Field */}
               <div>
-                <label htmlFor="time" className="block mb-2 font-medium">Time</label>
-                <div className="relative">
-                  <select
-                    id="time"
-                    name="time"
-                    value={formData.time}
-                    onChange={(e) => setFormData({...formData, time: e.target.value})}
-                    className="appearance-none w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pink-500"
-                    required
-                  >
-                    <option value="" disabled selected>Choose Time</option>
-                    <option value="09:00">9:00 AM</option>
-                    <option value="10:00">10:00 AM</option>
-                    <option value="11:00">11:00 AM</option>
-                    <option value="13:00">1:00 PM</option>
-                    <option value="14:00">2:00 PM</option>
-                    <option value="15:00">3:00 PM</option>
-                    <option value="16:00">4:00 PM</option>
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                    <ChevronDownIcon className="h-5 w-5" />
-                  </div>
-                </div>
+                <label className="block text-gray-700 mb-2">Time</label>
+                <select
+                  name="time"
+                  value={formData.time}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:bg-primary-mainPink focus:border-transparent transition-all"
+                  required
+                >
+                  <option value="">Choose Time</option>
+                  {generateTimeSlots().map(time => (
+                    <option key={time} value={time}>{time}</option>
+                  ))}
+                </select>
               </div>
             </div>
 
@@ -249,22 +315,26 @@ const AppointmentBookingPage: React.FC = () => {
                 onChange={handleChange}
                 rows={6}
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pink-500"
-                placeholder="hyyyyyyyyyyyyy"
+                placeholder="Tell us about your needs..."
                 required
               ></textarea>
             </div>
 
-            {/* Submit Button */}
-            <button
+           {/* Submit Button */}
+           <button
               type="submit"
-              className="w-full flex items-center justify-center space-x-2 bg-primary-mainPink hover:bg-primary-mainPink text-white py-4 px-6 rounded-full font-medium text-lg transition duration-200"
+              disabled={loading}
+              className="w-full bg-primary-mainPink hover:primary-mainPink text-white font-semibold py-3 rounded-full flex items-center justify-center gap-2 transition-colors disabled:opacity-70"
             >
-              <span>Send Message</span>
-              <span className="bg-white text-black  rouned-md p-[4px] rounded-full"><ChevronRightIcon className="h-4 w-4" /></span>
+              {loading ? 'Booking...' : 'Send Message'}
+              <span className='bg-white text-primary-mainPink p-2 rounded-full'>
+                <ArrowRight className="w-5 h-5" />
+              </span>
             </button>
           </form>
         </div>
       </div>
+       <ToastContainer />
     </div>
   );
 };

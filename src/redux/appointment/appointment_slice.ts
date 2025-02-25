@@ -17,10 +17,11 @@ export interface Appointment {
 export interface AppointmentPayload {
     name: string;
     email: string;
-    date: string;
-    time: string;
+    appointment_date: string;
+    appointment_time: string;
     description: string;
 }
+
 
 // Create an appointment
 export const createAppointment = (data: AppointmentPayload): Promise<AxiosResponse<Appointment>> => {

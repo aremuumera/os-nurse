@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { ForgotPasswordData, LoginData, OTPData, ResetOtp, ResetPasswordData, SignUpData } from '../../types/Auth';
+import { ForgotPasswordData, LoginData, OTPData, ResetOtp, ResetPasswordData, SignUpData, VerifyEmailData } from '../../types/Auth';
 import { UserForgotPasswordResponse,  UserLoginResponse,  UserReSendOtpResponse, UserResetPasswordResponse, UserSignUpResponse, UserVerifyOtpResponse } from '../../types/payload';
 import { API_HOSTNAME } from '../../utils/config';
 import AxiosInstance from '../../utils/AxiosInstance';
@@ -22,6 +22,13 @@ const VerifyOTPService = (VerifyOTPData: OTPData): Promise<AxiosResponse<UserVer
   return AxiosInstance.post(`${API_HOSTNAME}/verify-otp`, VerifyOTPData);
 };
 
+
+
+const VerifyEmailService = (VerifyEmailData: VerifyEmailData): Promise<AxiosResponse<UserVerifyOtpResponse>> => {
+  return AxiosInstance.post(`${API_HOSTNAME}/verify-otp`, VerifyEmailData);
+};
+
+
 const ResendOTPService = (ResendOTPData: ResetOtp): Promise<AxiosResponse<UserReSendOtpResponse>> => {
   return AxiosInstance.post(`${API_HOSTNAME}/resend-otp`, ResendOTPData);
 };
@@ -36,6 +43,7 @@ const authService = {
   VerifyOTPService,
   SignUpService,
   LoginService,
+  VerifyEmailService,
   ResetPasswordService,
   ForgotPasswordService,
   ResendOTPService,

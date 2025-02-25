@@ -57,8 +57,6 @@ export interface ApiResponse<T = unknown> {
 
   // Response for Verify OTP Action
   export interface UserVerifyOtpResponse {
-    verified: boolean; // Indicates if OTP verification was successful
     message: string; // E.g., "OTP verified successfully"
-    medical?: object; // JWT for medical user
   }
   

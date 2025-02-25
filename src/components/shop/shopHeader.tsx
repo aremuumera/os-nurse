@@ -17,6 +17,8 @@ const ShopNavbar = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
+const { isAuth } = useAppSelector((state) => state.auth);
+
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,7 +29,7 @@ const ShopNavbar = () => {
     setSearchQuery('');
     setIsMenuOpen(!isMenuOpen)
   };
-  
+  const getUser = localStorage.getItem('them-user');
   
 
   return (
@@ -83,7 +85,7 @@ const ShopNavbar = () => {
                 className="text-gray-700 hover:text-gray-900 flex items-center space-x-1"
               >
                 <User className="h-5 w-5" />
-                <span>Login/Register</span>
+                <span>{isAuth && getUser ? `Welcome back ${getUser}` :'Login/Register'}</span>
               </Link>
               <Link to={'/shop/cart'}
                 className="text-gray-700  hover:text-gray-900 relative"
@@ -144,7 +146,7 @@ const ShopNavbar = () => {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="block px-3 py-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-50"
             >
-              Login/Register
+             {isAuth && getUser ?`Welcome back ${getUser}` :'Login/Register'}
             </Link>
             <form onSubmit={handleSearch} className="px-3 py-2">
               <div className="relative">

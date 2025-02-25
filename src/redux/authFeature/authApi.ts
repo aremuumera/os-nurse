@@ -7,7 +7,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import authService from './authService';
 import { jwtDecode } from 'jwt-decode';
 // import AxiosInstance from '@/utils/CustomComponent/AxiosInstance';
-import { ForgotPasswordData, LoginData, OTPData, ResetOtp, ResetPasswordData, SignUpData } from '../../types/Auth';
+import { ForgotPasswordData, LoginData, OTPData, ResetOtp, ResetPasswordData, SignUpData, VerifyEmailData } from '../../types/Auth';
 import { UserForgotPasswordResponse, UserLoginResponse, UserReSendOtpResponse, UserResetPasswordResponse, UserSignUpResponse, UserVerifyOtpResponse } from '../../types/payload';
 import useHandleErr, { ErrorResponse } from '../../utils/UseErrorHandler';
 
@@ -173,6 +173,22 @@ export const VerifyOTP = createAsyncThunk<Partial<UserVerifyOtpResponse>, OTPDat
         email: email,
         otp: otp,
       });
+      return response.data;
+    } catch (err) {
+        const error = err as Error;
+      return rejectWithValue(HandleErr(error));
+    }
+  },
+);
+
+
+export const VerifyEmail = createAsyncThunk<Partial<UserVerifyOtpResponse>, VerifyEmailData, { rejectValue: ErrorResponse }>(
+  'auth/verifyEmail',
+  async (token, { rejectWithValue }) => {
+    const HandleErr = useHandleErr();
+
+    try {
+      const response = await authService.VerifyEmailService(token);
       return response.data;
     } catch (err) {
         const error = err as Error;

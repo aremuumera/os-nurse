@@ -1,3 +1,4 @@
+import { VerifyEmail } from '../redux/authFeature/authApi';
 
 interface ThunkErrorPayload {
     message?: string; // Error message
@@ -49,6 +50,10 @@ export type SignUpData = {
   export type OTPData = {
     otp: string;
     email: string;
+  };
+
+  export type VerifyEmailData = {
+    token: string;
   };
   
   // reset password data

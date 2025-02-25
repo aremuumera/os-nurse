@@ -3,6 +3,7 @@ import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 import withLazyLoading from '../utils/Loader';
 import { lazy } from 'react';
 import NotFoundPage from '../utils/page404';
+import PaymentSuccess from '../components/shop/PaymentSuccessPage';
 // import ShippingInformation from '../pages/shop/ShippingInformation';
 
 
@@ -20,6 +21,7 @@ const ProductDetail = withLazyLoading(lazy(() => import('../pages/shop/ProductDe
 const ProductCart = withLazyLoading(lazy(() => import('../pages/shop/Cart')));
 // const Payment = withLazyLoading(lazy(() => import('../pages/shop/Payment')));
 const BlogDetail = withLazyLoading(lazy(() => import('../pages/web/BlogDetail')));
+const VerifyEmailPage = withLazyLoading(lazy(() => import('../pages/auth/verifyEmail')));
 
 
 // Define the type for the route configuration
@@ -43,6 +45,7 @@ interface RouteConfig {
       { path:'/blog', element: <Blog /> },
       { path:'/blog/:blogDetail', element: <BlogDetail/> },
       { path:'/contact', element: <Contact /> },
+      { path:'/payment/success', element: <PaymentSuccess /> },
       { path:'*', element: <NotFoundPage /> },
     ],
   },
@@ -58,6 +61,7 @@ interface RouteConfig {
       {path:'reset-password', element: <ResetPassword />},
       {path:'forgot-password', element: <ForgotPassword />},
       {path:'verify-code', element: <VerifyCode />},
+      {path:'verify-email', element: <VerifyEmailPage />},
       { path:'*', element: <NotFoundPage /> },
     ]
   },

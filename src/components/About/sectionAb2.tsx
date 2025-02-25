@@ -1,5 +1,7 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { allPaths } from '../../utils/path';
 
 const OversabiNurseSection: React.FC = () => {
   return (
@@ -44,12 +46,12 @@ const OversabiNurseSection: React.FC = () => {
 
             {/* Contact Button */}
             <div>
-              <button className="bg-primary-mainPink hover:bg-primary-mainPink text-white font-medium rounded-full px-8 py-3 inline-flex items-center transition duration-300 ease-in-out">
+              <Link to={allPaths.contact} className="bg-primary-mainPink hover:bg-primary-mainPink text-white font-medium rounded-full px-8 py-3 inline-flex items-center transition duration-300 ease-in-out">
                 Contact Me
                 <span className="ml-2 bg-white rounded-full p-1">
                   <ArrowRight className="h-4 w-4 text-primary-mainPink " />
                 </span>
-              </button>
+              </Link>
             </div>
           </div>
         </div>

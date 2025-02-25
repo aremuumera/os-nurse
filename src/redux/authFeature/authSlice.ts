@@ -1,6 +1,6 @@
 
 import { createSlice } from '@reduxjs/toolkit';
-import { ResendOTP, UserForgotPassword, UserResetPassword, UserSignin, UserSignup, VerifyOTP } from './authApi';
+import { ResendOTP, UserForgotPassword, UserResetPassword, UserSignin, UserSignup, VerifyEmail, VerifyOTP } from './authApi';
 import { jwtDecode } from 'jwt-decode';
 import { Dispatch } from 'redux';
 import { PayloadAction, ActionReducerMapBuilder } from '@reduxjs/toolkit';
@@ -81,6 +81,8 @@ const AuthSlice = createSlice({
             state.loading = false;
             state.error = null;
             localStorage.removeItem('themOs');
+            localStorage.removeItem('them-os');
+            localStorage.removeItem('them-user');
             localStorage.removeItem('awaitingOTPVerification');
             state.isAuth = false;
             state.isInitialized = false;
@@ -140,6 +142,7 @@ const AuthSlice = createSlice({
                 state.isAuth = true;
                 state.isInitialized = true;
                 localStorage.setItem('them-os', action.payload.token);
+                localStorage.setItem('them-user', action.payload.user);
                 state.status = true;
             })
             .addCase(UserSignin.rejected, (state: AuthState, action: PayloadAction<any>) => {
@@ -219,10 +222,29 @@ const AuthSlice = createSlice({
             })
 
 
+            //  this is verify email
+            .addCase(VerifyEmail.pending, (state: AuthState) => {
+                state.status = false;
+                state.isAuth = false;
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(VerifyEmail.fulfilled, (state: AuthState, action: PayloadAction<any>) => {
+                state.status = true;
+                state.isAuth = true;
+                state.loading = false;
+                state.error = null;
+                state.isInitialized = true;
+                state.themOs = action.payload;
+            })
+            .addCase(VerifyEmail.rejected, (state: AuthState, action: PayloadAction<any>) => {
+                state.status = false;
+                state.loading = false;
+                state.isAuth = false;
+                state.error = action.payload;
+            })
 
-
-
-
+            
             // this is resend otp
             .addCase(ResendOTP.pending, (state: AuthState) => {
                 state.status = false;

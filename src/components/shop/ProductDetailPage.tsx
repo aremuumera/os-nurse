@@ -18,7 +18,7 @@ import { Book } from './shopArrivals';
     const dispatch = useAppDispatch();
     const { bookDetails, loading, error } = useAppSelector((state) => state.books);
 
-    console.log('Adding to cart:', bookDetails, productDetail);
+    // console.log('Adding to cart:', bookDetails, productDetail);
 
 
 
@@ -49,6 +49,9 @@ import { Book } from './shopArrivals';
         dispatch(addToCart(cartItem));
         navigate('/shop/cart');
       };
+
+
+      
   
     const renderContent = () => {
       if (loading) {

@@ -41,9 +41,7 @@ const Appointment = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // console.log('formData', formData);
-
-
+  
     // Validate the date
     const selectedDate = new Date(formData.date);
     if (!isValid(selectedDate)) {
@@ -57,14 +55,25 @@ const Appointment = () => {
       });
       return;
     }
-
+  
     // Format the date to 'yyyy-MM-dd' before sending it to the API
-    const formattedDate = format(selectedDate, 'yyyy-MM-dd'); 
+    const formattedDate = format(selectedDate, 'yyyy-MM-dd');
+    
+    // Format time to include seconds as required by the API
+    const formattedTime = `${formData.time}:00`;
+    
+    // Prepare the data according to the required payload structure
+    const appointmentData = {
+      name: formData.name,
+      email: formData.email,
+      appointment_date: formattedDate,
+      appointment_time: formattedTime,
+      description: formData.description
+    };
+    // console.log("appointmentData", appointmentData)
     try {
-      const resultAction = await dispatch(addAppointment({
-        ...formData,
-        date: formattedDate // Use the formatted date
-      }));
+      const resultAction = await dispatch(addAppointment(appointmentData));
+      
       if (addAppointment.fulfilled.match(resultAction)) {
         toast.success('Appointment booked successfully!', {
           position: "bottom-right",
