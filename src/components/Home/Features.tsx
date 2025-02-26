@@ -7,7 +7,7 @@ const LandingPage = () => {
   const features = [
     {
       id: '01',
-      img: 'public/oversabinurse/bl-2.svg',
+      img: '/oversabinurse/bl-2.svg',
       title: 'Application & Documentation',
       description: 'Tired of confusing paperwork and endless requirements? I\'ll help you navigate the application...',
       active: true
@@ -53,25 +53,23 @@ const LandingPage = () => {
             {features.map((feature) => (
               <div
                 key={feature.id}
-                className={`p-6 rounded-lg ${
+                className={`p-6 group rounded-lg ${
                   feature.active ? 'bg-[#961798]' : ''
-                } transition-all hover:shadow-lg`}
+                } transition-all hover:shadow-lg hover:bg-[#961798] `}
               >
                 <div className="flex justify-between items-center gap-4 mb-4">
                   <img src={feature.img} alt='' className="text-2xl"/>
-                  <span className={`text-[48px] ${feature.active ? 'text-[#F4A8D0]' : 'text-[#FCEAF4]'} font-semibold`}>{feature.id}</span>
+                  <span className={`text-[48px]  ${feature.active ? 'text-[#F4A8D0]' : 'text-[#FCEAF4]'} group-hover:text-[#F4A8D0]  font-semibold`}>{feature.id}</span>
                 </div>
-                <h3 className={`text-xl font-bold mb-2 ${
-                  feature.active ? 'text-white' : 'text-primary-'
-                }`}>
+                <h3 className={`group-hover:text-white text-xl font-bold mb-2 ${feature.active ? 'text-white' : 'text-primary-'}` }>
                   {feature.title}
                 </h3>
-                <p className={feature.active ? 'text-gray-300' : 'text-gray-600'}>
+                <p className={` group-hover:text-white ${feature.active ? 'text-gray-300' : 'text-gray-600'}`}>
                   {feature.description}
                 </p>
-                <Link to={'/'} className={`block w-fit border-primary-mainPink border-[1px] ${feature.active ? 'bg-white text-primary-mainPink border-primary-mainPink' : ''} mt-4 px-6 py-2 text-pink-500 bg-transparent hover:bg-pink-50 rounded-full transition flex items-center gap-2 rounded-full `}>
+                {/* <Link to={'/'} className={`block w-fit border-primary-mainPink border-[1px] ${feature.active ? 'bg-white text-primary-mainPink border-primary-mainPink' : ''} mt-4 px-6 py-2 text-pink-500 bg-transparent hover:bg-pink-50 rounded-full transition flex items-center gap-2 rounded-full `}>
                   Explore More <MdOutlineArrowOutward />
-                </Link>
+                </Link> */}
               </div>
             ))}
           </div>
