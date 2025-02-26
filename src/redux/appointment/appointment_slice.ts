@@ -1,7 +1,7 @@
-import { AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 import { API_HOSTNAME } from "../../utils/config";
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import AxiosInstance from "../../utils/AxiosInstance";
+// import AxiosInstance from "../../utils/AxiosInstance";
 
 // Type for Appointment
 export interface Appointment {
@@ -25,7 +25,7 @@ export interface AppointmentPayload {
 
 // Create an appointment
 export const createAppointment = (data: AppointmentPayload): Promise<AxiosResponse<Appointment>> => {
-    return AxiosInstance.post(`${API_HOSTNAME}/appointments`, data);
+    return axios.post(`${API_HOSTNAME}/appointments`, data);
 };
 
 
