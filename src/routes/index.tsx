@@ -61,7 +61,7 @@ interface RouteConfig {
       {path:'reset-password/:token', element: <ResetPassword />},
       {path:'forgot-password', element: <ForgotPassword />},
       {path:'verify-code', element: <VerifyCode />},
-      {path:'verify-email', element: <VerifyEmailPage />},
+      {path:'verify-email/:id/:hash', element: <VerifyEmailPage />},
       { path:'*', element: <NotFoundPage /> },
     ]
   },
