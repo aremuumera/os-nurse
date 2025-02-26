@@ -58,7 +58,7 @@ interface RouteConfig {
       {index: true, element: <Navigate to="/auth/sign-in" />},
       {path:'sign-in', element: <SignIn />},
       {path:'sign-up', element: <SignUp />},
-      {path:'reset-password', element: <ResetPassword />},
+      {path:'reset-password/:token', element: <ResetPassword />},
       {path:'forgot-password', element: <ForgotPassword />},
       {path:'verify-code', element: <VerifyCode />},
       {path:'verify-email', element: <VerifyEmailPage />},

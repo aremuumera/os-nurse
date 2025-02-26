@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { UserResetPassword } from '../../redux/authFeature/authApi';
 import { ToastContainer, toast } from 'react-toastify';
@@ -32,10 +32,10 @@ const ResetPasswordForm = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { loading } = useAppSelector((state) => state?.auth);
-
+  const { token } = useParams();
   // Get token and email from URL params
   const searchParams = new URLSearchParams(window.location.search);
-  const token = searchParams.get('token');
+  // const token = searchParams.get('token');
   const email = searchParams.get('email');
 
   const validateField = (name: keyof FormData, value: string): string | undefined => {
@@ -119,10 +119,7 @@ const ResetPasswordForm = () => {
         const resultAction = await dispatch(UserResetPassword(payload));
         
         if (UserResetPassword.fulfilled.match(resultAction)) {
-          toast(
-            <div>
-              <p className="font-medium text-black">{resultAction.payload.message}</p>
-            </div>,
+          toast((resultAction.payload.message ||  'Password reset successfully. You can now login with your new password'), 
             {
               position: "top-right",
               autoClose: 5000,
@@ -147,6 +144,7 @@ const ResetPasswordForm = () => {
             pauseOnHover: true,
             draggable: true,
           });
+          navigate(`${allPaths.auth.login}`)
         }
       } catch (err: any) {
         toast.error(err?.message || 'An unexpected error occurred. Please try again.', {

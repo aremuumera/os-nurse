@@ -87,10 +87,7 @@ const ForgotPasswordForm = () => {
         const resultAction = await dispatch(UserForgotPassword({ email: formData.email }));
         
         if (UserForgotPassword.fulfilled.match(resultAction)) {
-          toast(
-            <div>
-              <p className="font-medium text-black">{(resultAction.payload as { message: string }).message}</p>
-            </div>,
+          toast((resultAction.payload as any).message || 'Password send reset link sent successfully to your email',
             {
               position: "top-right",
               autoClose: 5000,
@@ -102,9 +99,10 @@ const ForgotPasswordForm = () => {
             }
           );
           
-          setTimeout(() => {
-            navigate(allPaths.auth.login);
-          }, 2000);
+          // setTimeout(() => {
+          //   navigate(allPaths.auth.login);
+          // }, 2000);
+          setFormData({ email: '' });
           
         } else if (UserForgotPassword.rejected.match(resultAction)) {
           toast.error((resultAction.payload as any)?.message || 'Failed to send reset link. Please try again.', {
