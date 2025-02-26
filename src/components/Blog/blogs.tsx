@@ -158,7 +158,7 @@ const Blogs: React.FC = () => {
   if (error) return <div className="text-center py-8 text-red-500">{error}</div>;
   
   return (
-    <div className="container mx-auto  py-8">
+    <div className="container mx-auto  px-5 py-8">
       <h1 className="text-3xl font-bold mb-8">Latest</h1>
       
       {displayedBlogs.length === 0 ? (

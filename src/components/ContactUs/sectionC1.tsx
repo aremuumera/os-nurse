@@ -250,7 +250,7 @@ const AppointmentBookingPage: React.FC = () => {
                   value={formData.name}
                   onChange={handleChange}
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pink-500"
-                  placeholder="Eamial@gmail.com"
+                  placeholder=" Enter your name"
                   required
                 />
               </div>
@@ -265,7 +265,7 @@ const AppointmentBookingPage: React.FC = () => {
                   value={formData.email}
                   onChange={handleChange}
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pink-500"
-                  placeholder="Input Email"
+                  placeholder="Enter your email"
                   required
                 />
               </div>
