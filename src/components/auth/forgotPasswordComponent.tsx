@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { UserForgotPassword } from '../../redux/authFeature/authApi';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { allPaths } from '../../utils/path';
+// import { allPaths } from '../../utils/path';
 
 interface FormData {
   email: string;
@@ -23,7 +23,7 @@ const ForgotPasswordForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { loading } = useAppSelector((state) => state?.auth);
 
   const validateField = (name: keyof FormData, value: string): string | undefined => {

@@ -62,9 +62,9 @@ const EmailVerification: React.FC = () => {
     verifyEmail();
   }, [id, hash, navigate]);
 
-  const handleNavigateToSignIn = () => {
-    navigate(`${allPaths.auth.login}`);
-  };
+  // const handleNavigateToSignIn = () => {
+  //   navigate(`${allPaths.auth.login}`);
+  // };
 
   // const handleResendVerification = async () => {
   //   try {
