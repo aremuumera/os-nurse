@@ -32,11 +32,13 @@ const BlogCard: React.FC<BlogCardProps> = ({ blog }) => {
         onClick={() => navigate(`/blog/${blog.uuid}`)}
       >
         <div className="rounded-lg  ">
+          <div className="w-[390px] h-[288px]">
           <img 
             src={blog.image_url || '/Frame 1000007341.png'} 
             alt={'over-sabi-nurse'} 
             className="w-full h-full object-cover"
           />
+          </div>
           <div className="py-4">
             <div className="flex items-center space-x-4 mb-2">
               <span className="text-pink-500 uppercase text-sm">{blog.category}</span>
