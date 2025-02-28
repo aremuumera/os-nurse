@@ -11,7 +11,7 @@ const SignUpService = (SignUpUserData: SignUpData): Promise<AxiosResponse<UserSi
 };
 
 const LoginService = (LoginUserData: LoginData): Promise<AxiosResponse<UserLoginResponse>> => {
-  return AxiosInstance.post(`${API_HOSTNAME}/login`,  LoginUserData);
+  return AxiosInstance.post(`${API_HOSTNAME}/login`,  LoginUserData,{ withCredentials: true,});
 };
 
 const ForgotPasswordService = (ForgotPasswordData: ForgotPasswordData): Promise<AxiosResponse<UserForgotPasswordResponse>> => {
