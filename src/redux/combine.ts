@@ -19,6 +19,7 @@ const persistedAuthReducer = persistReducer(authPersistConfig, AuthReducer);
 
 
 
+
 // Combine all reducers
 const rootReducer = combineReducers({
   auth: persistedAuthReducer,

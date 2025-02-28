@@ -32,7 +32,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ blog }) => {
         onClick={() => navigate(`/blog/${blog.uuid}`)}
       >
         <div className="rounded-lg  ">
-          <div className="w-[390px] h-[288px]">
+          <div className="w-full max-w-[390px] h-[288px]">
           <img 
             src={blog.image_url || '/Frame 1000007341.png'} 
             alt={'over-sabi-nurse'} 
