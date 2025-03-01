@@ -76,7 +76,7 @@ const BlogDetailsPage: React.FC = () => {
       </div>
       
       <img
-        src={blogDetails.image_url  ?  blogDetails.image_url  || '/Frame 1000009724.png'}
+        src={blogDetails.image_url  || '/Frame 1000009724.png'}
         alt={ 'oversabi Blog Details'}
         className="w-full h-96 object-cover rounded-lg mb-8"
       />
