@@ -62,9 +62,9 @@ const EmailVerification: React.FC = () => {
     verifyEmail();
   }, [id, hash, navigate]);
 
-  // const handleNavigateToSignIn = () => {
-  //   navigate(`${allPaths.auth.login}`);
-  // };
+  const handleNavigateToSignIn = () => {
+    navigate(`${allPaths.auth.login}`);
+  };
 
   // const handleResendVerification = async () => {
   //   try {
@@ -97,12 +97,12 @@ const EmailVerification: React.FC = () => {
               <p className="text-gray-600 mb-8 max-w-xs mx-auto">
                 Your email has been successfully verified. You can now sign in to your account.
               </p>
-              {/* <button
+              <button
                 onClick={handleNavigateToSignIn}
                 className="px-6 py-3 bg-blue-600 text-white rounded-md text-lg font-medium transition-transform hover:bg-blue-700 hover:-translate-y-1"
               >
                 Go to Sign In
-              </button> */}
+              </button>
             </div>
           ) : (
             <div className="flex flex-col items-center my-6">
@@ -113,20 +113,20 @@ const EmailVerification: React.FC = () => {
               <p className="text-gray-600 mb-8 max-w-xs mx-auto">
                 {error || "We couldn't verify your email. The verification link may have expired or is invalid."}
               </p>
-              {/* <div className="flex flex-col sm:flex-row gap-4">
-                <button
+              <div className="flex flex-col sm:flex-row gap-4">
+                {/* <button
                   onClick={handleResendVerification}
                   className="px-5 py-2 border-2 border-blue-600 text-blue-600 rounded-md font-medium hover:bg-blue-50"
                 >
                   {loading ? "Resending..." : "Resend Verification"}
-                </button>
+                </button> */}
                 <button
                   onClick={handleNavigateToSignIn}
                   className="px-5 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700"
                 >
                   Back to Sign In
                 </button>
-              </div> */}
+              </div>
             </div>
           )}
         </div>

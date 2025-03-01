@@ -46,6 +46,7 @@ interface RouteConfig {
       { path:'/blog/:blogDetail', element: <BlogDetail/> },
       { path:'/contact', element: <Contact /> },
       { path:'/payment/success', element: <PaymentSuccess /> },
+      {path:'verify-email/:id/:hash', element: <VerifyEmailPage />},
       { path:'*', element: <NotFoundPage /> },
     ],
   },

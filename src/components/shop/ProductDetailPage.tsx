@@ -115,7 +115,7 @@ import { Book } from './shopArrivals';
          
 
          {/* the images */}
-          <div className="relative">
+          <div className="relative ">
             <img
               src={bookDetails.cover_image_url ||  '/oversabinurse/home-book-11.svg'}
               alt={bookDetails.title}

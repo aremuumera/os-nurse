@@ -12,7 +12,7 @@ export const allPaths = {
         register: `/auth/sign-up`,
         forgotPassword: `/auth/forgot-password`,
         resetPassword: `/auth/reset-password`,
-        verifyCode: `/auth/verify-code`,
+        verifyCode: `/verify-email`,
     },
     shop: {
         shop: `/shop`,
