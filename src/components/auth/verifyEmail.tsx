@@ -7,6 +7,10 @@ import { useAppSelector } from '../../redux/store';
 import { allPaths } from '../../utils/path';
 import { API_HOSTNAME } from '../../utils/config';
 
+
+
+
+
 const EmailVerification: React.FC = () => {
   const navigate = useNavigate();
   // const location = useLocation();
@@ -62,9 +66,14 @@ const EmailVerification: React.FC = () => {
     verifyEmail();
   }, [id, hash, navigate]);
 
+
+
+
   const handleNavigateToSignIn = () => {
     navigate(`${allPaths.auth.login}`);
   };
+
+  
 
   // const handleResendVerification = async () => {
   //   try {

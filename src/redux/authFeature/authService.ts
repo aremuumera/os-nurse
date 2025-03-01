@@ -25,7 +25,7 @@ const VerifyOTPService = (VerifyOTPData: OTPData): Promise<AxiosResponse<UserVer
 
 
 const VerifyEmailService = (VerifyEmailData: VerifyEmailData): Promise<AxiosResponse<UserVerifyOtpResponse>> => {
-  return AxiosInstance.get(`${API_HOSTNAME}/verify-otp`, VerifyEmailData);
+  return AxiosInstance.post(`${API_HOSTNAME}/verify-otp`, VerifyEmailData);
 };
 
 
