@@ -33,7 +33,7 @@ const EmailVerification: React.FC = () => {
         }
 
         // Call the verification API using axios
-        const verifyUrl = `${API_HOSTNAME}/email/verify/${id}/${hash}`;
+        const verifyUrl = `${API_HOSTNAME}/email-verify/${id}/${hash}`;
         const response = await axios.get(verifyUrl);
         
         // Check if verification was successful
